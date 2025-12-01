@@ -2,26 +2,32 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Installer les dépendances système
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+# Installer TOUS les outils nécessaires pour pandas
 RUN apt-get update && apt-get install -y \
+    build-essential \
     gcc \
+    g++ \
     postgresql-client \
+    libpq-dev \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copier requirements.txt
 COPY requirements.txt .
 
-# Installer les dépendances Python
+# Installer pip d'abord
+RUN pip install --upgrade pip setuptools wheel
+
+# ENSUITE installer requirements (avec pandas)
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copier le projet
 COPY . .
 
-# Créer les répertoires nécessaires
-RUN mkdir -p /app/staticfiles /app/media
+RUN mkdir -p /app/staticfiles /app/media /app/logs
 
-# Exposer le port
 EXPOSE 8000
 
-# Commande de démarrage
-CMD ["gunicorn", "msi_backend.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4"]
+CMD ["gunicorn", "msi_backend.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4", "--timeout", "120"]

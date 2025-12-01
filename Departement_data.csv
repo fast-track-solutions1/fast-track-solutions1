@@ -1,0 +1,3 @@
+﻿societe_id,numero,nom,region,actif
+1,001,RH,Île-de-France,true
+1,002,IT,Île-de-France,true

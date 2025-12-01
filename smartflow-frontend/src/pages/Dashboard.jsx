@@ -14,14 +14,12 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Vérifiez si l'utilisateur est authentifié
     const token = localStorage.getItem('access_token');
     if (!token) {
       navigate('/login');
       return;
     }
 
-    // Récupérez les informations de l'utilisateur
     const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:8000/api/salaries/', {
@@ -30,13 +28,10 @@ export default function Dashboard() {
             'Content-Type': 'application/json',
           },
         });
-
         if (response.ok) {
           const data = await response.json();
           console.log('📊 Données reçues:', data);
           setUser(data);
-          
-          // Mettez à jour les stats
           setStats({
             totalEmployees: data.length || 0,
             activeRequests: 12,
@@ -52,57 +47,44 @@ export default function Dashboard() {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    navigate('/login');
-  };
-
   if (loading) {
-    return <div className="dashboard-container"><p>⏳ Chargement...</p></div>;
+    return (
+      <div className="loading">
+        ⏳ Chargement...
+      </div>
+    );
   }
 
   return (
     <div className="dashboard-container">
-      <div className="dashboard-header">
-        <h1>✅ MSI TeamHub - Dashboard</h1>
-        <button onClick={handleLogout} className="btn-logout">🚪 Déconnexion</button>
-      </div>
-
-      <div className="stats-grid">
+      <div className="stats-cards">
         <div className="stat-card">
-          <h3>{stats.totalEmployees}</h3>
-          <p>Employés</p>
+          <h3>Employés</h3>
+          <p className="stat-number">{stats.totalEmployees}</p>
         </div>
         <div className="stat-card">
-          <h3>{stats.activeRequests}</h3>
-          <p>Demandes Actives</p>
+          <h3>Demandes Actives</h3>
+          <p className="stat-number">{stats.activeRequests}</p>
         </div>
         <div className="stat-card">
-          <h3>{stats.pendingApprovals}</h3>
-          <p>En Attente</p>
+          <h3>En Attente</h3>
+          <p className="stat-number">{stats.pendingApprovals}</p>
         </div>
         <div className="stat-card">
-          <h3>{stats.totalDepartments}</h3>
-          <p>Départements</p>
+          <h3>Départements</h3>
+          <p className="stat-number">{stats.totalDepartments}</p>
         </div>
       </div>
-
-      <div className="dashboard-content">
-        <div className="card">
-          <h2>✨ Bienvenue !</h2>
-          <p>Vous êtes connecté avec succès ! 🎉</p>
-          <p>Les données de l'API s'affichent ci-dessous :</p>
-        </div>
-
-        <div className="card">
-          <h3>📊 Données API (JSON)</h3>
-          <pre>{JSON.stringify(user, null, 2)}</pre>
-        </div>
+      <div className="dashboard-body">
+        <h2>Bienvenue sur le tableau de bord RH ! 🎉</h2>
+        <p>Vous êtes connecté avec succès.</p>
+        <p>Les données de l'API s'affichent ci-dessous :</p>
+        <pre className="data-preview">
+          {JSON.stringify(user, null, 2)}
+        </pre>
       </div>
     </div>
   );

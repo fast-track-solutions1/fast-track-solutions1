@@ -1,3 +1,4 @@
+# api/models.py - COMPLET AVEC IMPORTLOG
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -28,7 +29,6 @@ class Societe(models.Model):
     def __str__(self):
         return self.nom
 
-
 class Departement(models.Model):
     """Représente un département géographique (France)"""
     numero = models.CharField(max_length=3, unique=True)
@@ -46,7 +46,6 @@ class Departement(models.Model):
     def __str__(self):
         return f"{self.numero} - {self.nom}"
 
-
 class Circuit(models.Model):
     """Représente un circuit dans un département"""
     nom = models.CharField(max_length=100)
@@ -61,7 +60,6 @@ class Circuit(models.Model):
 
     def __str__(self):
         return f"{self.departement.numero} - {self.nom}"
-
 
 class Service(models.Model):
     """Représente un service/département RH"""
@@ -80,7 +78,6 @@ class Service(models.Model):
     def __str__(self):
         return f"{self.nom} ({self.societe.nom})"
 
-
 class Grade(models.Model):
     """Représente un grade/niveau hiérarchique"""
     nom = models.CharField(max_length=100)
@@ -96,7 +93,6 @@ class Grade(models.Model):
     def __str__(self):
         return f"{self.nom} ({self.societe.nom})"
 
-
 class TypeAcces(models.Model):
     """Types d'accès (locaux, distance, etc.)"""
     nom = models.CharField(max_length=100, unique=True)
@@ -109,7 +105,6 @@ class TypeAcces(models.Model):
     def __str__(self):
         return self.nom
 
-
 class OutilTravail(models.Model):
     """Outils de travail (logiciels, etc.)"""
     nom = models.CharField(max_length=100, unique=True)
@@ -121,7 +116,6 @@ class OutilTravail(models.Model):
 
     def __str__(self):
         return self.nom
-
 
 class CreneauTravail(models.Model):
     """Créneaux horaires disponibles"""
@@ -141,7 +135,6 @@ class CreneauTravail(models.Model):
 
     def __str__(self):
         return f"{self.nom} ({self.heure_debut} - {self.heure_fin})"
-
 
 class Equipement(models.Model):
     """Types d'équipements informatiques"""
@@ -172,7 +165,6 @@ class Equipement(models.Model):
 
     def __str__(self):
         return f"{self.nom} ({self.type_equipement})"
-
 
 # ============================================================================
 # MODELES SALARIÉS
@@ -260,7 +252,6 @@ class Salarie(models.Model):
             return None
         return f"{self.date_naissance.day:02d}/{self.date_naissance.month:02d}"
 
-
 class HistoriqueSalarie(models.Model):
     """Historique des évolutions professionnelles du salarié"""
     salarie = models.ForeignKey(Salarie, on_delete=models.CASCADE, related_name='historique')
@@ -277,7 +268,6 @@ class HistoriqueSalarie(models.Model):
 
     def __str__(self):
         return f"{self.salarie} - {self.date_changement}"
-
 
 class HoraireSalarie(models.Model):
     """Horaires supplémentaires configurés pour un salarié"""
@@ -296,7 +286,6 @@ class HoraireSalarie(models.Model):
 
     def __str__(self):
         return f"{self.salarie} - {self.date_debut}"
-
 
 # ============================================================================
 # ÉQUIPEMENTS AFFECTÉS
@@ -328,7 +317,6 @@ class EquipementInstance(models.Model):
     def __str__(self):
         return f"{self.equipement.nom} - {self.numero_serie or 'N/A'}"
 
-
 # ============================================================================
 # ACCÈS APPLICATIFS
 # ============================================================================
@@ -344,7 +332,6 @@ class TypeApplicationAcces(models.Model):
 
     def __str__(self):
         return self.nom
-
 
 class AccesApplication(models.Model):
     """Accès applicatif d'un salarié"""
@@ -365,7 +352,6 @@ class AccesApplication(models.Model):
     def __str__(self):
         return f"{self.salarie.matricule} - {self.application}"
 
-
 class AccesSalarie(models.Model):
     """Accès physiques du salarié"""
     salarie = models.ForeignKey(Salarie, on_delete=models.CASCADE, related_name='acces_locaux', default=1)
@@ -379,7 +365,6 @@ class AccesSalarie(models.Model):
 
     def __str__(self):
         return f"{self.salarie.matricule} - {self.type_acces.nom}"
-
 
 # ============================================================================
 # DEMANDES (CONGÉS, ACOMPTES, SORTIES)
@@ -429,7 +414,6 @@ class DemandeConge(models.Model):
     def __str__(self):
         return f"{self.salarie.matricule} - {self.type_conge} ({self.date_debut})"
 
-
 class SoldeConge(models.Model):
     """Solde de congés pour chaque salarié"""
     salarie = models.OneToOneField(Salarie, on_delete=models.CASCADE, related_name='solde_conge')
@@ -440,7 +424,6 @@ class SoldeConge(models.Model):
 
     def __str__(self):
         return f"Solde - {self.salarie.matricule}"
-
 
 class DemandeAcompte(models.Model):
     """Demande d'acompte"""
@@ -471,7 +454,6 @@ class DemandeAcompte(models.Model):
     def __str__(self):
         return f"Acompte - {self.salarie.matricule} ({self.montant}€)"
 
-
 class DemandeSortie(models.Model):
     """Demande de sortie/absence non programmée"""
     STATUT_CHOICES = [
@@ -499,7 +481,6 @@ class DemandeSortie(models.Model):
 
     def __str__(self):
         return f"Sortie - {self.salarie.matricule} ({self.date_sortie})"
-
 
 class TravauxExceptionnels(models.Model):
     """Travaux/sorties exceptionnels (samedi, dimanche)"""
@@ -530,7 +511,6 @@ class TravauxExceptionnels(models.Model):
 
     def __str__(self):
         return f"Travaux - {self.salarie.matricule} ({self.date_travail})"
-
 
 # ============================================================================
 # DOCUMENTS
@@ -566,7 +546,6 @@ class DocumentSalarie(models.Model):
     def __str__(self):
         return f"{self.salarie.matricule} - {self.type_document}"
 
-
 # ============================================================================
 # FICHES DE POSTE
 # ============================================================================
@@ -601,7 +580,6 @@ class FichePoste(models.Model):
     def __str__(self):
         return self.titre
 
-
 class AmeliorationProposee(models.Model):
     """Améliorations proposées pour une fiche de poste"""
     STATUT_CHOICES = [
@@ -631,7 +609,6 @@ class AmeliorationProposee(models.Model):
     def __str__(self):
         return f"{self.titre} ({self.fiche_poste.titre})"
 
-
 class OutilFichePoste(models.Model):
     """Outils nécessaires pour une fiche de poste"""
     fiche_poste = models.ForeignKey(FichePoste, on_delete=models.CASCADE, related_name='outils')
@@ -643,7 +620,6 @@ class OutilFichePoste(models.Model):
 
     def __str__(self):
         return f"{self.fiche_poste.titre} - {self.outil_travail.nom}"
-
 
 # ============================================================================
 # MODELES PARAMÉTRAGES UTILISATEUR
@@ -660,7 +636,6 @@ class FicheParametresUser(models.Model):
 
     def __str__(self):
         return f"Paramètres - {self.user.username}"
-
 
 # ============================================================================
 # MODELE RÔLE
@@ -694,3 +669,45 @@ class Role(models.Model):
 
     def __str__(self):
         return self.get_nom_display()
+
+# ============================================================================
+# IMPORT EN MASSE - LOG
+# ============================================================================
+
+class ImportLog(models.Model):
+    """Trace chaque import en masse avec détails"""
+    
+    STATUS_CHOICES = [
+        ('en_cours', 'En cours'),
+        ('succes', 'Succès'),
+        ('erreur', 'Erreur'),
+        ('partiel', 'Succès partiel'),
+    ]
+    
+    api_name = models.CharField(max_length=100)  # ex: "departement", "service", "grade"
+    fichier_nom = models.CharField(max_length=255, null=True, blank=True)
+    
+    total_lignes = models.IntegerField(default=0)
+    lignes_succes = models.IntegerField(default=0)
+    lignes_erreur = models.IntegerField(default=0)
+    
+    statut = models.CharField(max_length=20, choices=STATUS_CHOICES, default='en_cours')
+    details_erreurs = models.JSONField(default=dict, null=True, blank=True)
+    
+    cree_par = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='import_logs')
+    date_creation = models.DateTimeField(auto_now_add=True)
+    date_modification = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-date_creation']
+        verbose_name = "Log d'import"
+        verbose_name_plural = "Logs d'import"
+    
+    def __str__(self):
+        return f"{self.api_name} - {self.date_creation.strftime('%d/%m/%Y %H:%M')}"
+    
+    def get_taux_succes(self):
+        """Retourne le % de succès"""
+        if self.total_lignes == 0:
+            return 0
+        return round((self.lignes_succes / self.total_lignes) * 100, 2)

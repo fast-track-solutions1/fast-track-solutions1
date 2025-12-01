@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import MainMenu from './MainMenu';
 import Header from '../Header';
+import './MainLayout.css';
 
 const TITRES = {
   '/dashboard': 'Tableau de bord',
@@ -18,10 +19,10 @@ export default function MainLayout() {
 
   return (
     <div className="main-layout">
-      <aside>
+      <aside className="sidebar">
         <MainMenu />
       </aside>
-      <main>
+      <main className="main-container">
         <Header titre={titrePage} />
         <section className="main-content">
           <Outlet />

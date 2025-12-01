@@ -10,6 +10,8 @@ import Salaries from './pages/Salaries';
 import Annuaire from './pages/Annuaire';
 import Organigramme from './pages/Organigramme';
 
+import './App.css';
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -22,31 +24,31 @@ function App() {
 
   const checkAuth = () => {
     const token = localStorage.getItem('access_token');
+    console.log('🔍 Vérification du token:', token ? '✅ Présent' : '❌ Absent');
     setIsAuthenticated(!!token);
     setLoading(false);
   };
 
   if (loading) {
     return (
-      <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100vh'}}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
         <h2>⏳ Chargement...</h2>
       </div>
     );
   }
 
+  console.log('📊 État App.jsx - isAuthenticated:', isAuthenticated);
+
   return (
     <AuthProvider>
       <Router>
         <Routes>
-          <Route path="/login" element={
-            !isAuthenticated ? <Login /> : <Navigate to="/dashboard" replace />
-          }/>
+          <Route 
+            path="/login" 
+            element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" replace />} 
+          />
           <Route
-            element={
-              isAuthenticated
-                ? <MainLayout />
-                : <Navigate to="/login" replace />
-            }
+            element={isAuthenticated ? <MainLayout /> : <Navigate to="/login" replace />}
           >
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/salaries" element={<Salaries />} />
