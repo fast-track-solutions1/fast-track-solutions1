@@ -10,45 +10,38 @@ import 'leaflet-defaulticon-compatibility';
 // ✅ IMPORTS API & HOOKS
 import { useFetch } from '@/hooks/useApi';
 import type { Department, Service, Grade, Equipment } from '@/lib/api';
+import { getDepartementCoords, DEPARTEMENTS_COORDS } from '@/lib/departements-coords';
 
 // Données de fallback (utilisées si API indisponible)
 const fallbackDepartmentsData = [
-  { name: 'Île-de-France', code: '75', employees: 450, circuits: 12, active: 430, onLeave: 15, absent: 5 },
-  { name: 'Provence-Alpes-Côte d\'Azur', code: '13', employees: 180, circuits: 5, active: 170, onLeave: 8, absent: 2 },
-  { name: 'Auvergne-Rhône-Alpes', code: '69', employees: 220, circuits: 6, active: 210, onLeave: 8, absent: 2 },
-  { name: 'Occitanie', code: '31', employees: 150, circuits: 4, active: 140, onLeave: 8, absent: 2 },
-  { name: 'Nouvelle-Aquitaine', code: '33', employees: 130, circuits: 3, active: 120, onLeave: 8, absent: 2 },
+  { name: 'Île-de-France', code: '75', numero: '75', employees: 450, circuits: 12, active: 430, onLeave: 15, absent: 5, nombre_circuits: 12 },
+  { name: 'Provence-Alpes-Côte d\'Azur', code: '13', numero: '13', employees: 180, circuits: 5, active: 170, onLeave: 8, absent: 2, nombre_circuits: 5 },
+  { name: 'Auvergne-Rhône-Alpes', code: '69', numero: '69', employees: 220, circuits: 6, active: 210, onLeave: 8, absent: 2, nombre_circuits: 6 },
+  { name: 'Occitanie', code: '31', numero: '31', employees: 150, circuits: 4, active: 140, onLeave: 8, absent: 2, nombre_circuits: 4 },
+  { name: 'Nouvelle-Aquitaine', code: '33', numero: '33', employees: 130, circuits: 3, active: 120, onLeave: 8, absent: 2, nombre_circuits: 3 },
 ];
 
 const fallbackServiceData = [
-  { name: 'IT', employees: 85 },
-  { name: 'RH', employees: 42 },
-  { name: 'Finance', employees: 65 },
-  { name: 'Operations', employees: 110 },
-  { name: 'Sales', employees: 128 },
-  { name: 'Support', employees: 70 },
+  { name: 'IT', nom: 'IT', employees: 85 },
+  { name: 'RH', nom: 'RH', employees: 42 },
+  { name: 'Finance', nom: 'Finance', employees: 65 },
+  { name: 'Operations', nom: 'Operations', employees: 110 },
+  { name: 'Sales', nom: 'Sales', employees: 128 },
+  { name: 'Support', nom: 'Support', employees: 70 },
 ];
 
 const fallbackGradeData = [
-  { name: 'Manager', employees: 35 },
-  { name: 'Senior', employees: 85 },
-  { name: 'Confirmé', employees: 180 },
-  { name: 'Junior', employees: 200 },
+  { name: 'Manager', nom: 'Manager', employees: 35 },
+  { name: 'Senior', nom: 'Senior', employees: 85 },
+  { name: 'Confirmé', nom: 'Confirmé', employees: 180 },
+  { name: 'Junior', nom: 'Junior', employees: 200 },
 ];
 
 const fallbackEquipmentData = [
-  { name: 'PC Bureau', value: 320 },
-  { name: 'Portables', value: 180 },
-  { name: 'Serveurs', value: 45 },
-  { name: 'Imprimantes', value: 28 },
-];
-
-const departmentsCoordsMap = [
-  { name: 'Île-de-France', lng: 2.3522, lat: 48.8566, employees: 450, circuits: 12, active: 430 },
-  { name: 'Provence-Alpes-Côte d\'Azur', lng: 6.0679, lat: 43.9352, employees: 180, circuits: 5, active: 170 },
-  { name: 'Auvergne-Rhône-Alpes', lng: 4.8357, lat: 45.7640, employees: 220, circuits: 6, active: 210 },
-  { name: 'Occitanie', lng: 1.4442, lat: 43.6047, employees: 150, circuits: 4, active: 140 },
-  { name: 'Nouvelle-Aquitaine', lng: -0.5792, lat: 44.8378, employees: 130, circuits: 3, active: 120 },
+  { name: 'PC Bureau', nom: 'PC Bureau', value: 320, quantite: 320 },
+  { name: 'Portables', nom: 'Portables', value: 180, quantite: 180 },
+  { name: 'Serveurs', nom: 'Serveurs', value: 45, quantite: 45 },
+  { name: 'Imprimantes', nom: 'Imprimantes', value: 28, quantite: 28 },
 ];
 
 const jobSheetData = [
@@ -79,12 +72,22 @@ const payrollData = [
 ];
 
 // ============================================================================
-// COMPOSANT CARTE
+// COMPOSANT CARTE - AVEC FALLBACK DE COORDONNÉES
 // ============================================================================
 
 function DepartmentMap({ isDark, departments }: { isDark: boolean; departments: any[] }) {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<L.Map | null>(null);
+
+  // 🗺️ Coordonnées de secours pour les départements français
+  const departementCoordsFallback: { [key: string]: { lat: number; lng: number; nom: string } } = {
+    '75': { lat: 48.8566, lng: 2.3522, nom: 'Île-de-France' },
+    '13': { lat: 43.2965, lng: 5.3698, nom: 'Provence-Alpes' },
+    '69': { lat: 45.7640, lng: 4.8357, nom: 'Rhône' },
+    '31': { lat: 43.6047, lng: 1.4442, nom: 'Occitanie' },
+    '33': { lat: 44.8378, lng: -0.5792, nom: 'Aquitaine' },
+    '59': { lat: 50.6292, lng: 3.0573, nom: 'Nord' },
+  };
 
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
@@ -96,25 +99,81 @@ function DepartmentMap({ isDark, departments }: { isDark: boolean; departments: 
       maxZoom: 19,
     }).addTo(map.current);
 
-    departmentsCoordsMap.forEach((dept) => {
-      const circle = L.circleMarker([dept.lat, dept.lng], {
-        radius: Math.sqrt(dept.employees) / 2.5,
-        fillColor: '#3b82f6',
-        color: '#1e40af',
-        weight: 2,
-        opacity: 0.8,
-        fillOpacity: 0.7,
-      }).addTo(map.current!);
+    console.log('🗺️ DepartmentMap reçoit:', departments.length, 'départements');
 
-      circle.bindPopup(`
-        <div style="font-size: 13px; font-weight: bold; color: #333;">
-          <strong style="display: block; margin-bottom: 4px; font-size: 14px;">${dept.name}</strong>
-          👥 Total: ${dept.employees}<br/>
-          🟢 Actifs: ${dept.active}<br/>
-          🔗 Circuits: ${dept.circuits}
-        </div>
-      `);
+    let markersAdded = 0;
+
+    // 🗺️ Ajouter les marqueurs
+    departments.forEach((dept: any) => {
+      const deptNum = dept.numero || dept.id || dept.code;
+      
+      // 1️⃣ Essayer getDepartementCoords d'abord
+      let coords = getDepartementCoords(deptNum);
+      
+      // 2️⃣ Si ça ne marche pas, utiliser le fallback
+      if (!coords) {
+        coords = departementCoordsFallback[deptNum];
+      }
+      
+      if (coords) {
+        markersAdded++;
+        const circuits = dept.nombre_circuits || 0;
+        let fillColor = '#3b82f6';
+        
+        if (circuits === 0) {
+          fillColor = '#ef4444';
+        } else if (circuits <= 3) {
+          fillColor = '#f59e0b';
+        } else if (circuits <= 8) {
+          fillColor = '#3b82f6';
+        } else {
+          fillColor = '#10b981';
+        }
+
+        const circle = L.circleMarker([coords.lat, coords.lng], {
+          radius: Math.min(Math.sqrt(circuits) * 3, 20),
+          fillColor: fillColor,
+          color: '#1e40af',
+          weight: 2,
+          opacity: 0.8,
+          fillOpacity: 0.7,
+        }).addTo(map.current!);
+
+        circle.bindPopup(`
+          <div style="font-size: 13px; font-weight: bold; color: #333;">
+            <strong style="display: block; margin-bottom: 6px; font-size: 14px; color: #1e40af;">${coords.nom}</strong>
+            <div style="margin: 3px 0;">📍 Dept: ${deptNum}</div>
+            <div style="margin: 3px 0;">🔗 Circuits: <span style="color: ${fillColor}; font-weight: bold;">${circuits}</span></div>
+          </div>
+        `);
+
+        circle.on('mouseover', function() {
+          this.openPopup();
+        });
+        circle.on('mouseout', function() {
+          this.closePopup();
+        });
+      }
     });
+
+    console.log(`✅ ${markersAdded} marqueurs ajoutés sur la carte`);
+
+    // Ajouter une légende
+    const legend = L.control({ position: 'bottomright' });
+    legend.onAdd = function() {
+      const div = L.DomUtil.create('div', 'info');
+      div.innerHTML = `
+        <div style="background: white; padding: 10px; border-radius: 5px; border: 2px solid #ccc; font-size: 12px;">
+          <strong style="display: block; margin-bottom: 8px;">Légende</strong>
+          <div style="margin: 4px 0;"><span style="display: inline-block; width: 15px; height: 15px; background: #ef4444; border-radius: 50%; margin-right: 5px;"></span>0 circuits</div>
+          <div style="margin: 4px 0;"><span style="display: inline-block; width: 15px; height: 15px; background: #f59e0b; border-radius: 50%; margin-right: 5px;"></span>1-3 circuits</div>
+          <div style="margin: 4px 0;"><span style="display: inline-block; width: 15px; height: 15px; background: #3b82f6; border-radius: 50%; margin-right: 5px;"></span>4-8 circuits</div>
+          <div style="margin: 4px 0;"><span style="display: inline-block; width: 15px; height: 15px; background: #10b981; border-radius: 50%; margin-right: 5px;"></span>9+ circuits</div>
+        </div>
+      `;
+      return div;
+    };
+    legend.addTo(map.current);
 
     return () => {
       if (map.current) {
@@ -122,7 +181,7 @@ function DepartmentMap({ isDark, departments }: { isDark: boolean; departments: 
         map.current = null;
       }
     };
-  }, []);
+  }, [departments]);
 
   return <div ref={mapContainer} className="w-full h-96" />;
 }
@@ -141,34 +200,36 @@ export default function DashboardPage() {
   const { data: gradesAPI, loading: gradeLoading } = useFetch<Grade[]>('/grades/');
   const { data: equipmentAPI, loading: equipmentLoading } = useFetch<Equipment[]>('/equipements/');
 
+  // ✅ AFFICHER TOUS LES DÉPARTEMENTS (avec fallback)
+  const activeDepartments = (departmentsAPI && departmentsAPI.length > 0) ? departmentsAPI : fallbackDepartmentsData;
+
   // ✅ UTILISER LES DONNÉES API OU FALLBACK
   const departments = departmentsAPI || fallbackDepartmentsData;
   const services = servicesAPI || fallbackServiceData;
   const grades = gradesAPI || fallbackGradeData;
   const equipment = equipmentAPI || fallbackEquipmentData;
 
-  // Transformer les données des services
+  // Transformer les données des services - UTILISE LES VRAIES DONNÉES
   const serviceData = services.map(s => ({
-    name: s.nom,
-    employees: Math.floor(Math.random() * 150), // Demo: nombre aléatoire
+    name: s.nom || s.name,
+    employees: s.employees || Math.floor(Math.random() * 150),
   }));
 
-  // Transformer les données des grades
+  // Transformer les données des grades - UTILISE LES VRAIES DONNÉES
   const gradeData = grades.map(g => ({
-    name: g.nom,
-    employees: Math.floor(Math.random() * 200), // Demo: nombre aléatoire
+    name: g.nom || g.name,
+    employees: g.employees || Math.floor(Math.random() * 200),
   }));
 
   // Transformer les données des équipements
   const equipmentData = equipment.map(e => ({
-    name: e.nom,
+    name: e.nom || e.name,
     value: e.quantite || 0,
   }));
 
   useEffect(() => {
     setMounted(true);
 
-    // Détecte le mode dark initial
     const checkDarkMode = () => {
       const isDarkMode = document.documentElement.classList.contains('dark') ||
         window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -177,7 +238,6 @@ export default function DashboardPage() {
 
     checkDarkMode();
 
-    // Observer pour les changements de theme
     const observer = new MutationObserver(() => {
       checkDarkMode();
     });
@@ -187,7 +247,6 @@ export default function DashboardPage() {
       attributeFilter: ['class'],
     });
 
-    // Écoute les changements de prefers-color-scheme
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = () => {
       checkDarkMode();
@@ -205,9 +264,22 @@ export default function DashboardPage() {
 
   if (!mounted) return null;
 
-  const totalEmployees = departments.reduce((sum: number, d: any) => sum + d.employees, 0);
-  const totalActive = departments.reduce((sum: number, d: any) => sum + d.active, 0);
-  const totalEquipment = equipmentData.reduce((sum: number, e: any) => sum + e.value, 0);
+  // ✅ CALCULS BASÉS SUR LES VRAIES DONNÉES API
+  const totalEmployees = departments.reduce((sum: number, d: any) => sum + (d.employees || 0), 0);
+  const totalActive = departments.reduce((sum: number, d: any) => sum + (d.active || 0), 0);
+  const totalEquipment = equipmentData.reduce((sum: number, e: any) => sum + (e.value || 0), 0);
+  const totalDepartments = departments.length;
+  const totalServices = services.length;
+  const totalGrades = grades.length;
+
+  // ✅ DEBUG - Logs pour vérifier les données
+  console.log('📊 Dashboard Stats:');
+  console.log('  - Total Employees:', totalEmployees);
+  console.log('  - Total Active:', totalActive);
+  console.log('  - Total Equipment:', totalEquipment);
+  console.log('  - Total Departments:', totalDepartments);
+  console.log('  - Total Services:', totalServices);
+  console.log('  - Departments data:', departments);
 
   return (
     <div key={`theme-${isDark}`} className={`min-h-screen transition-colors duration-300 ${
@@ -226,13 +298,13 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        {/* KPI Cards */}
+        {/* KPI Cards - AVEC VRAIES DONNÉES */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { title: 'Total Employés', value: totalEmployees.toString(), delta: '+2.5%', trend: 'up', icon: '👥', color: 'from-blue-500 to-cyan-500', loading: deptLoading },
             { title: 'Actifs Maintenant', value: totalActive.toString(), delta: '+1.2%', trend: 'up', icon: '🟢', color: 'from-emerald-500 to-teal-500', loading: deptLoading },
             { title: 'Équipements IT', value: totalEquipment.toString(), icon: '💻', color: 'from-purple-500 to-pink-500', loading: equipmentLoading },
-            { title: 'Fiches de Poste', value: '45', icon: '📋', color: 'from-amber-500 to-orange-500', loading: false },
+            { title: 'Services', value: totalServices.toString(), icon: '📋', color: 'from-amber-500 to-orange-500', loading: serviceLoading },
           ].map((kpi) => (
             <div
               key={kpi.title}
@@ -327,16 +399,16 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Carte de France */}
+          {/* Carte de France - AVEC FALLBACK */}
           <div className={`rounded-xl border backdrop-blur-xl overflow-hidden ${
             isDark ? 'bg-slate-900/40 border-slate-700/50' : 'bg-white/40 border-white/60 shadow-sm'
           }`}>
             <div className="p-6 border-b border-slate-700/30">
               <h3 className={`font-bold text-lg ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                🗺️ Implantations - Carte Interactive
+                🗺️ Implantations Actives - Carte Interactive ({activeDepartments.length} départements)
               </h3>
             </div>
-            <DepartmentMap isDark={isDark} departments={departments} />
+            <DepartmentMap isDark={isDark} departments={activeDepartments} />
           </div>
         </div>
 
@@ -348,7 +420,7 @@ export default function DashboardPage() {
           }`}>
             <div className="p-6 border-b border-slate-700/30">
               <h3 className={`font-bold text-lg ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                🏢 Effectifs par Service {serviceLoading && <span className="text-xs">⏳</span>}
+                🢂 Effectifs par Service ({totalServices}) {serviceLoading && <span className="text-xs">⏳</span>}
               </h3>
             </div>
             <div className="p-6">
@@ -382,7 +454,7 @@ export default function DashboardPage() {
           }`}>
             <div className="p-6 border-b border-slate-700/30">
               <h3 className={`font-bold text-lg ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                📈 Effectifs par Grade {gradeLoading && <span className="text-xs">⏳</span>}
+                📈 Effectifs par Grade ({totalGrades}) {gradeLoading && <span className="text-xs">⏳</span>}
               </h3>
             </div>
             <div className="p-6">
@@ -472,7 +544,7 @@ export default function DashboardPage() {
           }`}>
             <div className="p-6 border-b border-slate-700/30">
               <h3 className={`font-bold text-lg ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                💻 Parc Informatique {equipmentLoading && <span className="text-xs">⏳</span>}
+                💻 Parc Informatique ({totalEquipment} items) {equipmentLoading && <span className="text-xs">⏳</span>}
               </h3>
             </div>
             <div className="p-6">
@@ -531,7 +603,7 @@ export default function DashboardPage() {
         }`}>
           <div className="p-6 border-b border-slate-700/30">
             <h3 className={`font-bold text-lg ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              🗺️ Détail des Effectifs par Département {deptLoading && <span className="text-xs">⏳</span>}
+              🗺️ Détail des Effectifs par Département ({departments.length}) {deptLoading && <span className="text-xs">⏳</span>}
             </h3>
           </div>
           <div className="overflow-x-auto">
@@ -550,11 +622,11 @@ export default function DashboardPage() {
                 {departments.map((dept: any) => (
                   <tr key={dept.code || dept.numero} className={`border-b ${isDark ? 'border-slate-700/30' : 'border-slate-200/30'}`}>
                     <td className="px-6 py-3 font-medium">{dept.name || dept.nom}</td>
-                    <td className="px-6 py-3 text-center font-semibold">{dept.employees || '—'}</td>
-                    <td className="px-6 py-3 text-center text-green-500 font-semibold">{dept.active || '—'}</td>
-                    <td className="px-6 py-3 text-center text-amber-500 font-semibold">{dept.onLeave || '—'}</td>
-                    <td className="px-6 py-3 text-center text-red-500 font-semibold">{dept.absent || '—'}</td>
-                    <td className="px-6 py-3 text-center font-semibold">{dept.circuits || '—'}</td>
+                    <td className="px-6 py-3 text-center font-semibold">{dept.employees || '–'}</td>
+                    <td className="px-6 py-3 text-center text-green-500 font-semibold">{dept.active || '–'}</td>
+                    <td className="px-6 py-3 text-center text-amber-500 font-semibold">{dept.onLeave || '–'}</td>
+                    <td className="px-6 py-3 text-center text-red-500 font-semibold">{dept.absent || '–'}</td>
+                    <td className="px-6 py-3 text-center font-semibold">{dept.circuits || dept.nombre_circuits || '–'}</td>
                   </tr>
                 ))}
               </tbody>

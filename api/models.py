@@ -1,4 +1,4 @@
-# api/models.py - COMPLET AVEC IMPORTLOG - INDENTATION CORRIGÉE
+# api/models.py - ENRICHI AVEC LISTE COMPLÈTE D'ÉQUIPEMENTS
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -147,18 +147,134 @@ class CreneauTravail(models.Model):
 
 
 class Equipement(models.Model):
-    """Types d'équipements informatiques"""
+    """Types d'équipements informatiques - Liste complète"""
     TYPES_EQUIPEMENT = [
-        ('casque', 'Casque'),
-        ('pc', 'PC'),
-        ('laptop', 'Laptop'),
-        ('souris', 'Souris'),
-        ('telephone', 'Téléphone'),
-        ('carte_sim', 'Carte SIM'),
-        ('ecran', 'Écran'),
+        # ORDINATEURS & POSTES DE TRAVAIL
+        ('pc_bureau', 'PC de Bureau'),
+        ('laptop', 'Laptop / Ordinateur Portable'),
+        ('tablette', 'Tablette'),
+        ('all_in_one', 'Ordinateur Tout-en-Un'),
+        ('poste_travail', 'Poste de Travail / Workstation'),
+        
+        # SERVEURS & INFRASTRUCTURE
+        ('serveur', 'Serveur'),
+        ('serveur_rack', 'Serveur Rack'),
+        ('nas', 'NAS (Network Attached Storage)'),
+        ('san', 'SAN (Storage Area Network)'),
+        ('mainframe', 'Mainframe'),
+        
+        # PÉRIPHÉRIQUES & ACCESSOIRES PC
         ('clavier', 'Clavier'),
+        ('souris', 'Souris'),
+        ('souris_trackpad', 'Trackpad / Touchpad'),
+        ('ecran', 'Écran / Moniteur'),
+        ('ecran_tactile', 'Écran Tactile'),
+        ('projecteur', 'Projecteur'),
+        ('data_show', 'Data Show / Videoprojecteur'),
         ('docking', 'Docking Station'),
-        ('autre', 'Autre'),
+        ('hub_usb', 'Hub USB'),
+        ('adaptateur', 'Adaptateur'),
+        ('chargeur', 'Chargeur / Alimentation'),
+        ('batterie', 'Batterie'),
+        ('casque_audio', 'Casque Audio / Headset'),
+        ('casque_usb', 'Casque USB'),
+        ('microphone', 'Microphone'),
+        ('haut_parleur', 'Haut-Parleur'),
+        ('webcam', 'Webcam / Caméra Web'),
+        ('cable_hdmi', 'Câble HDMI'),
+        ('cable_usb', 'Câble USB'),
+        ('cable_reseau', 'Câble Réseau / RJ45'),
+        ('cable_alimentation', 'Câble d\'Alimentation'),
+        ('multiprise', 'Multiprise / Rallonge'),
+        
+        # IMPRIMANTES & SCANNERS
+        ('imprimante_laser', 'Imprimante Laser'),
+        ('imprimante_inkjet', 'Imprimante Jet d\'Encre'),
+        ('imprimante_3d', 'Imprimante 3D'),
+        ('scanner_document', 'Scanner Document'),
+        ('scanner_code_barre', 'Scanner Code-Barres'),
+        ('scanner_main', 'Scanneur Portable'),
+        ('multifonction', 'Multifonction (Imprim/Scan/Copie/Fax)'),
+        ('photocopieur', 'Photocopieur'),
+        ('fax', 'Fax / Téléfax'),
+        
+        # ÉQUIPEMENTS RÉSEAU
+        ('routeur', 'Routeur'),
+        ('routeur_wifi', 'Routeur WiFi'),
+        ('switch_reseau', 'Switch Réseau / Commutateur'),
+        ('switch_poe', 'Switch PoE'),
+        ('point_acces_wifi', 'Point d\'Accès WiFi'),
+        ('point_acces_mesh', 'Point d\'Accès WiFi Mesh'),
+        ('modem', 'Modem'),
+        ('modem_adsl', 'Modem ADSL'),
+        ('firewall', 'Firewall / Pare-feu'),
+        ('vpn', 'Passerelle VPN'),
+        ('antenne_wifi', 'Antenne WiFi'),
+        ('antenne_5g', 'Antenne 5G'),
+        
+        # TÉLÉPHONIE
+        ('telephone_fixe', 'Téléphone Fixe'),
+        ('telephone_ip', 'Téléphone IP'),
+        ('telephone_mobile', 'Téléphone Mobile / Smartphone'),
+        ('carte_sim', 'Carte SIM'),
+        ('pabx', 'PABX / Autocommutateur'),
+        ('centraliste', 'Poste Centraliste'),
+        
+        # STOCKAGE & SAUVEGARDE
+        ('disque_dur', 'Disque Dur Interne'),
+        ('disque_dur_externe', 'Disque Dur Externe'),
+        ('ssd', 'SSD (Solid State Drive)'),
+        ('ssd_externe', 'SSD Externe'),
+        ('cle_usb', 'Clé USB'),
+        ('cle_usb_securisee', 'Clé USB Sécurisée'),
+        ('lecteur_cd_dvd', 'Lecteur CD/DVD'),
+        ('graveur_dvd', 'Graveur DVD'),
+        ('lecteur_blu_ray', 'Lecteur Blu-Ray'),
+        ('bande_magnetique', 'Bande Magnétique (Sauvegarde)'),
+        ('cartouche_backup', 'Cartouche Backup'),
+        
+        # COMPOSANTS INFORMATIQUES
+        ('ram', 'Mémoire RAM'),
+        ('processeur', 'Processeur / CPU'),
+        ('carte_mere', 'Carte Mère'),
+        ('carte_graphique', 'Carte Graphique / GPU'),
+        ('carte_reseau', 'Carte Réseau'),
+        ('carte_son', 'Carte Son'),
+        ('alimentation_pc', 'Alimentation PC'),
+        ('ventilateur', 'Ventilateur'),
+        ('boitier_pc', 'Boîtier PC'),
+        ('radiateur', 'Radiateur'),
+        
+        # ÉQUIPEMENTS DE SÉCURITÉ
+        ('camera_surveillance', 'Caméra Surveillance / IP Cam'),
+        ('camera_thermique', 'Caméra Thermique'),
+        ('dvr_nvr', 'DVR / NVR (Enregistreur Vidéo)'),
+        ('capteur_mouvement', 'Capteur de Mouvement'),
+        ('lecteur_badge', 'Lecteur de Badge / RFID'),
+        ('biometrie_scanner', 'Scanner Biométrique'),
+        ('badge_securite', 'Badge de Sécurité'),
+        
+        # ÉQUIPEMENTS ÉLECTRIQUES
+        ('onduleur_ups', 'Onduleur / UPS (Alimentation Secours)'),
+        ('stabilisateur_tension', 'Stabilisateur de Tension'),
+        ('generatrice', 'Génératrice'),
+        ('clim_serveur', 'Climatisation Salle Serveur'),
+        
+        # ÉQUIPEMENTS DE CONFÉRENCE & COLLABORATION
+        ('tableau_interactif', 'Tableau Interactif / Smartboard'),
+        ('ecran_interactif', 'Écran Interactif'),
+        ('camera_conference', 'Caméra de Conférence'),
+        ('microphone_conference', 'Microphone de Conférence'),
+        ('systeme_visio', 'Système de Vidéoconférence'),
+        
+        # AUTRES ÉQUIPEMENTS IT
+        ('lecteur_code_barre_mobile', 'Lecteur Code-Barres Mobile'),
+        ('terminal_pda', 'Terminal PDA'),
+        ('lecteur_rfid', 'Lecteur RFID'),
+        ('imprimante_etiquettes', 'Imprimante d\'Étiquettes'),
+        ('balance_connectee', 'Balance Connectée'),
+        ('chrono_badge', 'Système de Pointage / Badge Temps'),
+        ('autre_it', 'Autre Équipement IT'),
     ]
 
     nom = models.CharField(max_length=100)
@@ -224,7 +340,6 @@ class Salarie(models.Model):
     # Horaires
     creneau_travail = models.ForeignKey(CreneauTravail, on_delete=models.SET_NULL, null=True, blank=True, related_name='salaries')
     en_poste = models.BooleanField(default=True)
-
     date_creation = models.DateTimeField(auto_now_add=True)
     date_modification = models.DateTimeField(auto_now=True)
 
@@ -239,11 +354,9 @@ class Salarie(models.Model):
         """Retourne ancienneté au format '5 ans, 3 mois'"""
         if not self.date_embauche:
             return None
-        
         today = date.today()
         if self.statut == 'inactif' and self.date_sortie:
             today = self.date_sortie
-        
         diff = relativedelta(today, self.date_embauche)
         return f"{diff.years} ans, {diff.months} mois"
 
@@ -251,15 +364,12 @@ class Salarie(models.Model):
         """Retourne le statut actuel : EN_POSTE, EN_PAUSE, HORS_HORAIRES"""
         if not self.creneau_travail:
             return "NON_CONFIG"
-        
         now = datetime.now().time()
         if self.creneau_travail.heure_pause_debut and self.creneau_travail.heure_pause_fin:
             if self.creneau_travail.heure_pause_debut <= now <= self.creneau_travail.heure_pause_fin:
                 return "EN_PAUSE"
-        
         if self.creneau_travail.heure_debut <= now <= self.creneau_travail.heure_fin:
             return "EN_POSTE"
-        
         return "HORS_HORAIRES"
 
     @property
@@ -267,7 +377,6 @@ class Salarie(models.Model):
         """Retourne jour/mois naissance pour anniversaire"""
         if not self.date_naissance:
             return None
-        
         return f"{self.date_naissance.day:02d}/{self.date_naissance.month:02d}"
 
 
@@ -742,5 +851,4 @@ class ImportLog(models.Model):
         """Retourne le % de succès"""
         if self.total_lignes == 0:
             return 0
-        
         return round((self.lignes_succes / self.total_lignes) * 100, 2)

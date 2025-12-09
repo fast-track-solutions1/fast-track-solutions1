@@ -20,6 +20,7 @@ const settingsMenu = [
   { label: 'Paramètres grades', href: '/settings/grades' },
   { label: 'Paramètres services', href: '/settings/services' },
   { label: 'Paramètres départements', href: '/settings/departments' },
+  { label: 'Paramètres équipements', href: '/settings/equipment' },  // ✅ NOUVEAU
 ];
 
 export default function AppLayout({

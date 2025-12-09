@@ -1,0 +1,118 @@
+// lib/departements-coords.ts
+// Coordonnées GPS de tous les départements français
+
+export const DEPARTEMENTS_COORDS = [
+  { "numero": "01", "nom": "Ain", "lat": 46.0, "lng": 5.5 },
+  { "numero": "02", "nom": "Aisne", "lat": 49.5, "lng": 3.5 },
+  { "numero": "03", "nom": "Allier", "lat": 46.5, "lng": 3.5 },
+  { "numero": "04", "nom": "Alpes-de-Haute-Provence", "lat": 44.2, "lng": 6.2 },
+  { "numero": "05", "nom": "Hautes-Alpes", "lat": 44.8, "lng": 6.2 },
+  { "numero": "06", "nom": "Alpes-Maritimes", "lat": 43.7, "lng": 7.3 },
+  { "numero": "07", "nom": "Ardèche", "lat": 44.8, "lng": 4.6 },
+  { "numero": "08", "nom": "Ardennes", "lat": 49.7, "lng": 4.7 },
+  { "numero": "09", "nom": "Ariège", "lat": 42.9, "lng": 1.5 },
+  { "numero": "10", "nom": "Aube", "lat": 48.3, "lng": 4.0 },
+  { "numero": "11", "nom": "Aude", "lat": 43.2, "lng": 2.3 },
+  { "numero": "12", "nom": "Aveyron", "lat": 44.2, "lng": 2.6 },
+  { "numero": "13", "nom": "Bouches-du-Rhône", "lat": 43.3, "lng": 5.1 },
+  { "numero": "14", "nom": "Calvados", "lat": 49.3, "lng": -0.3 },
+  { "numero": "15", "nom": "Cantal", "lat": 45.0, "lng": 3.1 },
+  { "numero": "16", "nom": "Charente", "lat": 45.6, "lng": 0.2 },
+  { "numero": "17", "nom": "Charente-Maritime", "lat": 45.8, "lng": -1.0 },
+  { "numero": "18", "nom": "Cher", "lat": 47.1, "lng": 2.3 },
+  { "numero": "19", "nom": "Corrèze", "lat": 45.3, "lng": 1.8 },
+  { "numero": "21", "nom": "Côte-d'Or", "lat": 47.3, "lng": 4.8 },
+  { "numero": "22", "nom": "Côtes-d'Armor", "lat": 48.5, "lng": -2.7 },
+  { "numero": "23", "nom": "Creuse", "lat": 46.1, "lng": 2.1 },
+  { "numero": "24", "nom": "Dordogne", "lat": 45.2, "lng": 1.0 },
+  { "numero": "25", "nom": "Doubs", "lat": 47.3, "lng": 6.0 },
+  { "numero": "26", "nom": "Drôme", "lat": 44.8, "lng": 5.2 },
+  { "numero": "27", "nom": "Eure", "lat": 49.0, "lng": 1.4 },
+  { "numero": "28", "nom": "Eure-et-Loir", "lat": 48.4, "lng": 1.4 },
+  { "numero": "29", "nom": "Finistère", "lat": 48.3, "lng": -4.1 },
+  { "numero": "2A", "nom": "Corse-du-Sud", "lat": 41.8, "lng": 8.9 },
+  { "numero": "2B", "nom": "Haute-Corse", "lat": 42.4, "lng": 9.1 },
+  { "numero": "30", "nom": "Gard", "lat": 43.9, "lng": 4.4 },
+  { "numero": "31", "nom": "Haute-Garonne", "lat": 43.6, "lng": 1.4 },
+  { "numero": "32", "nom": "Gers", "lat": 43.6, "lng": 0.6 },
+  { "numero": "33", "nom": "Gironde", "lat": 44.8, "lng": -0.6 },
+  { "numero": "34", "nom": "Hérault", "lat": 43.6, "lng": 3.2 },
+  { "numero": "35", "nom": "Ille-et-Vilaine", "lat": 48.1, "lng": -1.7 },
+  { "numero": "36", "nom": "Indre", "lat": 46.9, "lng": 1.7 },
+  { "numero": "37", "nom": "Indre-et-Loire", "lat": 47.3, "lng": 0.8 },
+  { "numero": "38", "nom": "Isère", "lat": 45.4, "lng": 5.7 },
+  { "numero": "39", "nom": "Jura", "lat": 46.5, "lng": 5.8 },
+  { "numero": "40", "nom": "Landes", "lat": 43.8, "lng": -1.0 },
+  { "numero": "41", "nom": "Loir-et-Cher", "lat": 47.6, "lng": 1.3 },
+  { "numero": "42", "nom": "Loire", "lat": 45.4, "lng": 4.2 },
+  { "numero": "43", "nom": "Haute-Loire", "lat": 45.0, "lng": 3.9 },
+  { "numero": "44", "nom": "Loire-Atlantique", "lat": 47.1, "lng": -1.5 },
+  { "numero": "45", "nom": "Loiret", "lat": 47.9, "lng": 2.4 },
+  { "numero": "46", "nom": "Lot", "lat": 44.5, "lng": 1.6 },
+  { "numero": "47", "nom": "Lot-et-Garonne", "lat": 44.3, "lng": 0.6 },
+  { "numero": "48", "nom": "Lozère", "lat": 44.5, "lng": 3.4 },
+  { "numero": "49", "nom": "Maine-et-Loire", "lat": 47.4, "lng": -0.8 },
+  { "numero": "50", "nom": "Manche", "lat": 49.3, "lng": -1.6 },
+  { "numero": "51", "nom": "Marne", "lat": 48.9, "lng": 4.0 },
+  { "numero": "52", "nom": "Haute-Marne", "lat": 48.4, "lng": 5.2 },
+  { "numero": "53", "nom": "Mayenne", "lat": 48.3, "lng": -0.6 },
+  { "numero": "54", "nom": "Meurthe-et-Moselle", "lat": 48.7, "lng": 6.2 },
+  { "numero": "55", "nom": "Meuse", "lat": 49.1, "lng": 5.4 },
+  { "numero": "56", "nom": "Morbihan", "lat": 47.6, "lng": -3.4 },
+  { "numero": "57", "nom": "Moselle", "lat": 49.2, "lng": 6.2 },
+  { "numero": "58", "nom": "Nièvre", "lat": 46.8, "lng": 3.9 },
+  { "numero": "59", "nom": "Nord", "lat": 50.6, "lng": 3.1 },
+  { "numero": "60", "nom": "Oise", "lat": 49.3, "lng": 2.4 },
+  { "numero": "61", "nom": "Orne", "lat": 48.6, "lng": -0.2 },
+  { "numero": "62", "nom": "Pas-de-Calais", "lat": 50.4, "lng": 2.2 },
+  { "numero": "63", "nom": "Puy-de-Dôme", "lat": 45.7, "lng": 3.1 },
+  { "numero": "64", "nom": "Pyrénées-Atlantiques", "lat": 43.3, "lng": -1.0 },
+  { "numero": "65", "nom": "Hautes-Pyrénées", "lat": 43.1, "lng": 0.4 },
+  { "numero": "66", "nom": "Pyrénées-Orientales", "lat": 42.6, "lng": 2.6 },
+  { "numero": "67", "nom": "Bas-Rhin", "lat": 48.5, "lng": 7.6 },
+  { "numero": "68", "nom": "Haut-Rhin", "lat": 47.8, "lng": 7.2 },
+  { "numero": "69", "nom": "Rhône", "lat": 45.7, "lng": 4.8 },
+  { "numero": "70", "nom": "Haute-Saône", "lat": 47.6, "lng": 6.2 },
+  { "numero": "71", "nom": "Saône-et-Loire", "lat": 46.5, "lng": 4.5 },
+  { "numero": "72", "nom": "Sarthe", "lat": 48.0, "lng": 0.2 },
+  { "numero": "73", "nom": "Savoie", "lat": 45.6, "lng": 6.2 },
+  { "numero": "74", "nom": "Haute-Savoie", "lat": 46.0, "lng": 6.7 },
+  { "numero": "75", "nom": "Paris", "lat": 48.8566, "lng": 2.3522 },
+  { "numero": "76", "nom": "Seine-Maritime", "lat": 49.4, "lng": 1.1 },
+  { "numero": "77", "nom": "Seine-et-Marne", "lat": 48.5, "lng": 2.7 },
+  { "numero": "78", "nom": "Yvelines", "lat": 48.8, "lng": 1.9 },
+  { "numero": "79", "nom": "Deux-Sèvres", "lat": 46.8, "lng": -0.5 },
+  { "numero": "80", "nom": "Somme", "lat": 50.0, "lng": 2.3 },
+  { "numero": "81", "nom": "Tarn", "lat": 43.7, "lng": 2.3 },
+  { "numero": "82", "nom": "Tarn-et-Garonne", "lat": 44.0, "lng": 1.3 },
+  { "numero": "83", "nom": "Var", "lat": 43.2, "lng": 6.3 },
+  { "numero": "84", "nom": "Vaucluse", "lat": 44.3, "lng": 5.3 },
+  { "numero": "85", "nom": "Vendée", "lat": 46.7, "lng": -1.4 },
+  { "numero": "86", "nom": "Vienne", "lat": 46.6, "lng": 0.4 },
+  { "numero": "87", "nom": "Haute-Vienne", "lat": 46.2, "lng": 1.3 },
+  { "numero": "88", "nom": "Vosges", "lat": 48.3, "lng": 6.4 },
+  { "numero": "89", "nom": "Yonne", "lat": 47.8, "lng": 3.6 },
+  { "numero": "90", "nom": "Territoire de Belfort", "lat": 47.6, "lng": 6.8 },
+  { "numero": "91", "nom": "Essonne", "lat": 48.4, "lng": 2.4 },
+  { "numero": "92", "nom": "Hauts-de-Seine", "lat": 48.8, "lng": 2.2 },
+  { "numero": "93", "nom": "Seine-Saint-Denis", "lat": 48.9, "lng": 2.5 },
+  { "numero": "94", "nom": "Val-de-Marne", "lat": 48.8, "lng": 2.5 },
+  { "numero": "95", "nom": "Val-d'Oise", "lat": 49.0, "lng": 2.2 },
+];
+
+export interface DepartementCoords {
+  numero: string;
+  nom: string;
+  lat: number;
+  lng: number;
+}
+
+export function getDepartementCoords(numero: string): DepartementCoords | undefined {
+  return DEPARTEMENTS_COORDS.find(d => d.numero === numero);
+}
+
+export function getDepartementByName(nom: string): DepartementCoords | undefined {
+  return DEPARTEMENTS_COORDS.find(d => 
+    d.nom.toLowerCase().includes(nom.toLowerCase())
+  );
+}

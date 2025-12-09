@@ -11,7 +11,8 @@ import {
   GraduationCap, 
   Settings, 
   LogOut,
-  ChevronRight
+  ChevronRight,
+  Package
 } from 'lucide-react';
 
 const sidebarItems = [
@@ -20,6 +21,7 @@ const sidebarItems = [
   { icon: Users, label: 'Départements', href: '/admin/departements' },
   { icon: Briefcase, label: 'Services', href: '/admin/services' },
   { icon: GraduationCap, label: 'Grades & Postes', href: '/admin/grades' },
+  { icon: Package, label: 'Équipements', href: '/settings/equipment' },
 ];
 
 export function Sidebar() {
