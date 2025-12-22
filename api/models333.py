@@ -1,3 +1,5 @@
+# api/models.py - ENRICHI AVEC LISTE COMPLÈTE D'ÉQUIPEMENTS
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -153,12 +155,14 @@ class Equipement(models.Model):
         ('tablette', 'Tablette'),
         ('all_in_one', 'Ordinateur Tout-en-Un'),
         ('poste_travail', 'Poste de Travail / Workstation'),
+        
         # SERVEURS & INFRASTRUCTURE
         ('serveur', 'Serveur'),
         ('serveur_rack', 'Serveur Rack'),
         ('nas', 'NAS (Network Attached Storage)'),
         ('san', 'SAN (Storage Area Network)'),
         ('mainframe', 'Mainframe'),
+        
         # PÉRIPHÉRIQUES & ACCESSOIRES PC
         ('clavier', 'Clavier'),
         ('souris', 'Souris'),
@@ -182,6 +186,7 @@ class Equipement(models.Model):
         ('cable_reseau', 'Câble Réseau / RJ45'),
         ('cable_alimentation', 'Câble d\'Alimentation'),
         ('multiprise', 'Multiprise / Rallonge'),
+        
         # IMPRIMANTES & SCANNERS
         ('imprimante_laser', 'Imprimante Laser'),
         ('imprimante_inkjet', 'Imprimante Jet d\'Encre'),
@@ -192,6 +197,7 @@ class Equipement(models.Model):
         ('multifonction', 'Multifonction (Imprim/Scan/Copie/Fax)'),
         ('photocopieur', 'Photocopieur'),
         ('fax', 'Fax / Téléfax'),
+        
         # ÉQUIPEMENTS RÉSEAU
         ('routeur', 'Routeur'),
         ('routeur_wifi', 'Routeur WiFi'),
@@ -205,6 +211,7 @@ class Equipement(models.Model):
         ('vpn', 'Passerelle VPN'),
         ('antenne_wifi', 'Antenne WiFi'),
         ('antenne_5g', 'Antenne 5G'),
+        
         # TÉLÉPHONIE
         ('telephone_fixe', 'Téléphone Fixe'),
         ('telephone_ip', 'Téléphone IP'),
@@ -212,6 +219,7 @@ class Equipement(models.Model):
         ('carte_sim', 'Carte SIM'),
         ('pabx', 'PABX / Autocommutateur'),
         ('centraliste', 'Poste Centraliste'),
+        
         # STOCKAGE & SAUVEGARDE
         ('disque_dur', 'Disque Dur Interne'),
         ('disque_dur_externe', 'Disque Dur Externe'),
@@ -224,6 +232,7 @@ class Equipement(models.Model):
         ('lecteur_blu_ray', 'Lecteur Blu-Ray'),
         ('bande_magnetique', 'Bande Magnétique (Sauvegarde)'),
         ('cartouche_backup', 'Cartouche Backup'),
+        
         # COMPOSANTS INFORMATIQUES
         ('ram', 'Mémoire RAM'),
         ('processeur', 'Processeur / CPU'),
@@ -235,6 +244,7 @@ class Equipement(models.Model):
         ('ventilateur', 'Ventilateur'),
         ('boitier_pc', 'Boîtier PC'),
         ('radiateur', 'Radiateur'),
+        
         # ÉQUIPEMENTS DE SÉCURITÉ
         ('camera_surveillance', 'Caméra Surveillance / IP Cam'),
         ('camera_thermique', 'Caméra Thermique'),
@@ -243,17 +253,20 @@ class Equipement(models.Model):
         ('lecteur_badge', 'Lecteur de Badge / RFID'),
         ('biometrie_scanner', 'Scanner Biométrique'),
         ('badge_securite', 'Badge de Sécurité'),
+        
         # ÉQUIPEMENTS ÉLECTRIQUES
         ('onduleur_ups', 'Onduleur / UPS (Alimentation Secours)'),
         ('stabilisateur_tension', 'Stabilisateur de Tension'),
         ('generatrice', 'Génératrice'),
         ('clim_serveur', 'Climatisation Salle Serveur'),
+        
         # ÉQUIPEMENTS DE CONFÉRENCE & COLLABORATION
         ('tableau_interactif', 'Tableau Interactif / Smartboard'),
         ('ecran_interactif', 'Écran Interactif'),
         ('camera_conference', 'Caméra de Conférence'),
         ('microphone_conference', 'Microphone de Conférence'),
         ('systeme_visio', 'Système de Vidéoconférence'),
+        
         # AUTRES ÉQUIPEMENTS IT
         ('lecteur_code_barre_mobile', 'Lecteur Code-Barres Mobile'),
         ('terminal_pda', 'Terminal PDA'),
@@ -278,19 +291,6 @@ class Equipement(models.Model):
 
     def __str__(self):
         return f"{self.nom} ({self.type_equipement})"
-
-    def recalculer_stock(self):
-        """Recalcule stock_disponible = stock_total - instances affectées"""
-        affected_count = EquipementInstance.objects.filter(
-            equipement=self,
-            date_retrait__isnull=True
-        ).count()
-        self.stock_disponible = max(0, self.stock_total - affected_count)
-
-    def save(self, *args, **kwargs):
-        """Recalcule automatiquement le stock avant sauvegarde"""
-        self.recalculer_stock()
-        super().save(*args, **kwargs)
 
 
 # ============================================================================
@@ -341,7 +341,6 @@ class Salarie(models.Model):
     # Horaires
     creneau_travail = models.ForeignKey(CreneauTravail, on_delete=models.SET_NULL, null=True, blank=True, related_name='salaries')
     en_poste = models.BooleanField(default=True)
-
     date_creation = models.DateTimeField(auto_now_add=True)
     date_modification = models.DateTimeField(auto_now=True)
 
@@ -448,17 +447,6 @@ class EquipementInstance(models.Model):
 
     def __str__(self):
         return f"{self.equipement.nom} - {self.numero_serie or 'N/A'}"
-
-    def save(self, *args, **kwargs):
-        """Après création/modification → recalcule stock du parent"""
-        super().save(*args, **kwargs)
-        self.equipement.save()
-
-    def delete(self, *args, **kwargs):
-        """Après suppression → recalcule stock du parent"""
-        equipement = self.equipement
-        super().delete(*args, **kwargs)
-        equipement.save()
 
 
 # ============================================================================
@@ -841,7 +829,7 @@ class ImportLog(models.Model):
         ('partiel', 'Succès partiel'),
     ]
 
-    api_name = models.CharField(max_length=100)
+    api_name = models.CharField(max_length=100)  # ex: "departement", "service", "grade"
     fichier_nom = models.CharField(max_length=255, null=True, blank=True)
     total_lignes = models.IntegerField(default=0)
     lignes_succes = models.IntegerField(default=0)

@@ -36,7 +36,7 @@ interface EquipementInstance {
   salarie_nom?: string;
   date_affectation: string;
   date_retrait?: string | null;
-  etat: 'neuf' | 'bon' | 'usure' | 'defaut' | 'hors_service';
+  etat: 'neuf' | 'bon' | 'usure' | 'defaut' | 'hors_service'; // ✅ CORRIGÉ
   notes?: string;
   date_creation: string;
 }
@@ -162,17 +162,17 @@ const EQUIPEMENT_TYPES = [
 const INSTANCE_STATES = [
   { value: 'neuf', label: 'Neuf' },
   { value: 'bon', label: 'Bon État' },
-  { value: 'usure', label: 'Usure Légère' },
+  { value: 'usure', label: 'Usure Légère' }, // ✅ CORRIGÉ
   { value: 'defaut', label: 'Défaut' },
-  { value: 'hors_service', label: 'Hors Service' },
+  { value: 'hors_service', label: 'Hors Service' }, // ✅ CORRIGÉ
 ];
 
 const STATE_COLORS: Record<string, string> = {
   neuf: '#10b981',
   bon: '#3b82f6',
-  usure: '#f59e0b',
+  usure: '#f59e0b', // ✅ CORRIGÉ
   defaut: '#ef4444',
-  hors_service: '#8b5cf6',
+  hors_service: '#8b5cf6', // ✅ CORRIGÉ
 };
 
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899'];
@@ -200,6 +200,7 @@ export default function EquipmentSettingsPage() {
     type_equipement: 'pc_bureau',
     description: '',
     stock_total: 0,
+    stock_disponible: 0,
     actif: true,
   });
 
@@ -280,11 +281,6 @@ export default function EquipmentSettingsPage() {
   }, [instancesList]);
 
   // ============= HANDLERS =============
-  
-  // ============================================================================
-  // 1️⃣ MODIFIER handleSaveEquipment - CALCUL AUTOMATIQUE
-  // ============================================================================
-
   const handleSaveEquipment = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -302,21 +298,19 @@ export default function EquipmentSettingsPage() {
       return;
     }
 
-    try {
-      // ✅ CALCUL AUTOMATIQUE DU STOCK DISPONIBLE
-      // stock_disponible = stock_total - (nombre d'instances affectées)
-      const equipmentId = editingEquipment?.id;
-      const affectedCount = equipmentId
-        ? (instancesList || []).filter((inst) => inst.equipement === equipmentId).length
-        : 0;
-      const calculatedStockDisponible = Math.max(0, equipmentFormData.stock_total - affectedCount);
+    if (equipmentFormData.stock_disponible > equipmentFormData.stock_total) {
+      setError('Le stock disponible ne peut pas dépasser le stock total');
+      setSaving(false);
+      return;
+    }
 
+    try {
       const payload = {
         nom: equipmentFormData.nom.trim(),
         type_equipement: equipmentFormData.type_equipement,
         description: equipmentFormData.description.trim() || '',
         stock_total: equipmentFormData.stock_total,
-        stock_disponible: calculatedStockDisponible, // ✅ CALCULÉ AUTOMATIQUEMENT
+        stock_disponible: equipmentFormData.stock_disponible,
         actif: equipmentFormData.actif,
       };
 
@@ -345,6 +339,7 @@ export default function EquipmentSettingsPage() {
     setError(null);
     setSaving(true);
 
+    // ✅ Validation sécurisée
     const numeroSerie = instanceFormData.numeroserie ?? '';
     if (!numeroSerie.trim()) {
       setError('Le numéro de série est obligatoire');
@@ -359,14 +354,15 @@ export default function EquipmentSettingsPage() {
     }
 
     try {
+      // ✅ PAYLOAD CORRIGÉ - Underscores dans les noms
       const payload = {
         equipement: Number(instanceFormData.equipement),
-        numero_serie: numeroSerie.trim(),
+        numero_serie: numeroSerie.trim(), // ✅ UNDERSCORE
         salarie: instanceFormData.salarie ? Number(instanceFormData.salarie) : null,
-        date_affectation: instanceFormData.dateaffectation,
+        date_affectation: instanceFormData.dateaffectation, // ✅ UNDERSCORE
         date_retrait: instanceFormData.dateretrait && instanceFormData.dateretrait.trim() !== ''
           ? instanceFormData.dateretrait
-          : null,
+          : null, // ✅ UNDERSCORE
         etat: instanceFormData.etat,
         notes: (instanceFormData.notes ?? '').trim() || '',
       };
@@ -401,6 +397,7 @@ export default function EquipmentSettingsPage() {
       type_equipement: eq.type_equipement,
       description: eq.description || '',
       stock_total: eq.stock_total,
+      stock_disponible: eq.stock_disponible,
       actif: eq.actif,
     });
     setEditingEquipment(eq);
@@ -432,6 +429,7 @@ export default function EquipmentSettingsPage() {
       type_equipement: 'pc_bureau',
       description: '',
       stock_total: 0,
+      stock_disponible: 0,
       actif: true,
     });
     setError(null);
@@ -524,6 +522,7 @@ export default function EquipmentSettingsPage() {
         </div>
 
         <div className="flex gap-2">
+          {/* Stats Button */}
           <button
             onClick={() => setShowStats(!showStats)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
@@ -536,6 +535,7 @@ export default function EquipmentSettingsPage() {
             Stats
           </button>
 
+          {/* Export Button */}
           <button
             onClick={handleExportCSV}
             disabled={activeTab !== 'equipment' || filteredAndSortedEquipments.length === 0}
@@ -545,15 +545,21 @@ export default function EquipmentSettingsPage() {
             Export
           </button>
 
-          <button
-            onClick={handleRefresh}
-            disabled={equipLoading || instanceLoading}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50"
-          >
-            <RefreshCw size={18} className={equipLoading || instanceLoading ? 'animate-spin' : ''} />
-            Rafraîchir
-          </button>
+          {/* Refresh Button */}
+<button
+  onClick={handleRefresh}
+  disabled={equipLoading || instanceLoading}
+  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50"
+>
+  <RefreshCw 
+    size={18} 
+    className={equipLoading || instanceLoading ? 'animate-spin' : ''} 
+  />
+  Rafraîchir
+</button>
 
+
+          {/* Add Button */}
           <button
             onClick={() => {
               if (activeTab === 'equipment') {
@@ -563,6 +569,7 @@ export default function EquipmentSettingsPage() {
                   type_equipement: 'pc_bureau',
                   description: '',
                   stock_total: 0,
+                  stock_disponible: 0,
                   actif: true,
                 });
                 setShowEquipmentForm(true);
@@ -644,6 +651,7 @@ export default function EquipmentSettingsPage() {
         <div className="space-y-4">
           {/* FILTRES */}
           <div className="flex flex-col md:flex-row gap-4 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+            {/* Recherche */}
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-3 text-slate-400" size={18} />
               <input
@@ -655,6 +663,7 @@ export default function EquipmentSettingsPage() {
               />
             </div>
 
+            {/* Type Filtre */}
             <div className="relative">
               <Filter className="absolute left-3 top-3 text-slate-400" size={18} />
               <select
@@ -671,6 +680,7 @@ export default function EquipmentSettingsPage() {
               </select>
             </div>
 
+            {/* Actif Filtre */}
             <select
               value={filterEquipmentActif}
               onChange={(e) => setFilterEquipmentActif(e.target.value)}
@@ -875,10 +885,6 @@ export default function EquipmentSettingsPage() {
         </div>
       )}
 
-      {/* ============================================================================
-         2️⃣ MODIFIER MODAL - RETIRER CHAMP "DISPONIBLE"
-         ============================================================================ */}
-
       {/* MODAL ÉQUIPEMENT */}
       {showEquipmentForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -927,40 +933,31 @@ export default function EquipmentSettingsPage() {
                 />
               </div>
 
-              {/* ✅ UNIQUE CHAMP: STOCK TOTAL UNIQUEMENT */}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-                  Stock Total
-                  {editingEquipment && (
-                    <span className="text-xs text-slate-500 dark:text-slate-400 ml-2">
-                      (Stock disponible sera calculé automatiquement)
-                    </span>
-                  )}
-                </label>
-                <input
-                  type="number"
-                  required
-                  min="0"
-                  value={equipmentFormData.stock_total}
-                  onChange={(e) => setEquipmentFormData({ ...equipmentFormData, stock_total: parseInt(e.target.value) || 0 })}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
-
-              {/* ✅ AFFICHAGE DYNAMIQUE SI MODIFICATION */}
-              {editingEquipment && (
-                <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
-                  <p className="text-xs text-slate-600 dark:text-slate-300 mb-2">
-                    <strong>Stock calculé automatiquement:</strong>
-                  </p>
-                  <p className="text-sm font-bold text-blue-600 dark:text-blue-400">
-                    Disponible: {Math.max(0, editingEquipment.stock_total - (instancesList || []).filter((inst) => inst.equipement === editingEquipment.id).length)} / {editingEquipment.stock_total}
-                  </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                    Affectés: {(instancesList || []).filter((inst) => inst.equipement === editingEquipment.id).length}
-                  </p>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Stock Total</label>
+                  <input
+                    type="number"
+                    required
+                    min="0"
+                    value={equipmentFormData.stock_total}
+                    onChange={(e) => setEquipmentFormData({ ...equipmentFormData, stock_total: parseInt(e.target.value) || 0 })}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
                 </div>
-              )}
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Disponible</label>
+                  <input
+                    type="number"
+                    required
+                    min="0"
+                    value={equipmentFormData.stock_disponible}
+                    onChange={(e) => setEquipmentFormData({ ...equipmentFormData, stock_disponible: parseInt(e.target.value) || 0 })}
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+              </div>
 
               <div className="flex items-center gap-2">
                 <input
@@ -1121,6 +1118,10 @@ export default function EquipmentSettingsPage() {
     </div>
   );
 }
+
+// ============================================================================
+// COMPOSANT STAT CARD
+// ============================================================================
 
 function StatCard({ label, value }: { label: string; value: string | number }) {
   return (

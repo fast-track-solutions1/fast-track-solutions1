@@ -1,365 +1,395 @@
 'use client';
-import { Salarie } from '@/lib/salarie-api';
-import { useState, useEffect, useMemo } from 'react';
-import { useFetch } from '@/hooks/useFetch';
-import { Plus, Search, Filter, RefreshCw, Download, BarChart3, AlertCircle, Loader2 } from 'lucide-react';
-import { Service, serviceApi } from '@/lib/service-api';
-import { Societe, societeApi } from '@/lib/societe-api';
-import ServiceForm from '@/components/settings/ServiceForm';
-import ServiceTable from '@/components/settings/ServiceTable';
-import ServiceStats from '@/components/settings/ServiceStats';
 
-export default function ServicesSettingsPage() {
-  const [services, setServices] = useState<Service[]>([]);
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import {
+  ArrowLeft,
+  Mail,
+  Phone,
+  Calendar,
+  Briefcase,
+  MapPin,
+  User,
+  Building2,
+  Award,
+  Clock,
+  Edit,
+  Trash2,
+  Users,
+  Gift,
+  PhoneCall,
+} from 'lucide-react';
+
+interface Salarie {
+  id: number;
+  nom: string;
+  prenom: string;
+  matricule: string;
+  genre: string;
+  date_naissance: string;
+  telephone: string;
+  mail_professionnel: string;
+  telephone_professionnel: string;
+  extension_3cx: string;
+  photo: string | null;
+  societe: number;
+  service: number;
+  grade: number;
+  responsable_direct: number | null;
+  poste: string;
+  departements: number[];
+  date_embauche: string;
+  statut: string;
+  creneau_travail: number | null;
+}
+
+interface CreneauTravail {
+  id: number;
+  nom: string;
+  heure_debut: string;
+  heure_fin: string;
+  heure_pause_debut: string | null;
+  heure_pause_fin: string | null;
+}
+
+interface Societe {
+  id: number;
+  nom: string;
+}
+
+interface Service {
+  id: number;
+  nom: string;
+  responsable: number | null;
+}
+
+interface Grade {
+  id: number;
+  nom: string;
+}
+
+interface Departement {
+  id: number;
+  numero: string;
+  nom: string;
+  region: string;
+  cheflieu: string;
+  nombre_circuits: number;
+}
+
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('access_token');
+  return {
+    'Content-Type': 'application/json',
+    ...(token && { Authorization: `Bearer ${token}` }),
+  };
+};
+
+export default function SalarieDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const router = useRouter();
+  const [id, setId] = useState<string | null>(null);
+
+  const [salarie, setSalarie] = useState<Salarie | null>(null);
   const [societes, setSocietes] = useState<Societe[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
+  const [grades, setGrades] = useState<Grade[]>([]);
+  const [departements, setDepartements] = useState<Departement[]>([]);
+  const [salaries, setSalaries] = useState<Salarie[]>([]);
+  const [creneaux, setCreneaux] = useState<CreneauTravail[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showForm, setShowForm] = useState(false);
-  const [showStats, setShowStats] = useState(false);
-  const [editingService, setEditingService] = useState<Service | null>(null);
-  const [mounted, setMounted] = useState(false);
-  const { data: salariesData, loading: salariesLoading } = useFetch('/api/salaries/');
-  const salaries = Array.isArray(salariesData) ? salariesData : salariesData?.results || [];
-
-  // 🔍 Filtres et recherche
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterSociete, setFilterSociete] = useState<number | 'all'>('all');
-  const [filterActif, setFilterActif] = useState<boolean | 'all'>('all');
-  const [filterResponsable, setFilterResponsable] = useState<'with' | 'without' | 'all'>('all');
-  const [sortField, setSortField] = useState<'nom' | 'societe' | 'date_creation'>('nom');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const headers = getAuthHeaders();
 
-  // ✅ Charger les données
-  const loadData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const [servicesData, societesData] = await Promise.all([
-        serviceApi.getServices(),
-        societeApi.getSocietes(),
-      ]);
-      
-      setServices(servicesData);
-      setSocietes(societesData);
-    } catch (err: any) {
-      console.error('Erreur chargement:', err);
-      setError(err.message || 'Erreur lors du chargement');
-    } finally {
-      setLoading(false);
+        const [
+          salarieRes,
+          societesRes,
+          servicesRes,
+          gradesRes,
+          departementsRes,
+          salariesRes,
+          creneauxRes,
+        ] = await Promise.all([
+          fetch(`http://localhost:8000/api/salaries/${id}/`, { headers }),
+          fetch(`http://localhost:8000/api/societes/`, { headers }),
+          fetch(`http://localhost:8000/api/services/`, { headers }),
+          fetch(`http://localhost:8000/api/grades/`, { headers }),
+          fetch(`http://localhost:8000/api/departements/`, { headers }),
+          fetch(`http://localhost:8000/api/salaries/`, { headers }),
+          fetch(`http://localhost:8000/api/creneaux-travail/`, { headers }),
+        ]);
+
+        if (!salarieRes.ok) {
+          if (salarieRes.status === 401) {
+            throw new Error('Non authentifié. Veuillez vous connecter.');
+          }
+          throw new Error('Salarié non trouvé');
+        }
+
+        const salarieData = await salarieRes.json();
+        const societesData = await societesRes.json();
+        const servicesData = await servicesRes.json();
+        const gradesData = await gradesRes.json();
+        const departementsData = await departementsRes.json();
+        const salariesData = await salariesRes.json();
+        const creneauxData = await creneauxRes.json();
+
+        setSalarie(salarieData);
+        setSocietes(societesData.results || societesData);
+        setServices(servicesData.results || servicesData);
+        setGrades(gradesData.results || gradesData);
+        setDepartements(departementsData.results || departementsData);
+        setSalaries(salariesData.results || salariesData);
+        setCreneaux(creneauxData.results || creneauxData);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchData();
     }
+  }, [id]);
+
+  useEffect(() => {
+    const resolveParams = async () => {
+      const resolvedParams = await params;
+      setId(resolvedParams.id);
+    };
+    resolveParams();
+  }, [params]);
+
+  // Helpers
+  const getSocieteName = (id: number) =>
+    societes.find((s) => s.id === id)?.nom || 'N/A';
+  const getServiceName = (id: number) =>
+    services.find((s) => s.id === id)?.nom || 'N/A';
+  const getGradeName = (id: number) =>
+    grades.find((g) => g.id === id)?.nom || 'N/A';
+
+  const getResponsableName = (id: number | null) => {
+    if (!id) return 'N/A';
+    const resp = salaries.find((s) => s.id === id);
+    return resp ? `${resp.prenom} ${resp.nom}` : 'N/A';
   };
 
-  useEffect(() => {
-    if (mounted) {
-      loadData();
-    }
-  }, [mounted]);
+  const getResponsableService = (serviceId: number) => {
+    const service = services.find((s) => s.id === serviceId);
+    if (!service?.responsable) return 'N/A';
+    return getResponsableName(service.responsable);
+  };
 
-  // 🔍 Filtrage et tri
-  const filteredAndSortedServices = useMemo(() => {
-    let filtered = [...services];
+  const getDepartementInfo = (deptId: number) =>
+    departements.find((d) => d.id === deptId);
 
-    // Recherche par nom ou description
-    if (searchTerm) {
-      filtered = filtered.filter((service) =>
-        service.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        service.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  const getCreneau = () => {
+    if (!salarie?.creneau_travail) return null;
+    return creneaux.find((c) => c.id === salarie.creneau_travail);
+  };
+
+  // Récupérer TOUTES les régions
+  const getRegions = () => {
+    if (!salarie?.departements || salarie.departements.length === 0)
+      return 'N/A';
+    const regions = salarie.departements
+      .map((deptId) => getDepartementInfo(deptId)?.region)
+      .filter((region, index, self) => region && self.indexOf(region) === index); // Unique
+    return regions.length === 0 ? 'N/A' : regions.join(', ');
+  };
+
+  // Calcul anniversaire avec format complet
+  const getAnniversaireInfo = () => {
+    if (!salarie?.date_naissance) return null;
+
+    const today = new Date();
+    const birthDate = new Date(salarie.date_naissance);
+    let thisYearBirthday = new Date(
+      today.getFullYear(),
+      birthDate.getMonth(),
+      birthDate.getDate()
+    );
+
+    let nextBirthday = thisYearBirthday;
+    if (thisYearBirthday < today) {
+      nextBirthday = new Date(
+        today.getFullYear() + 1,
+        birthDate.getMonth(),
+        birthDate.getDate()
       );
     }
 
-    // Filtre par société
-    if (filterSociete !== 'all') {
-      filtered = filtered.filter((service) => service.societe === filterSociete);
-    }
+    const diffTime = nextBirthday.getTime() - today.getTime();
+    const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    // Filtre actif/inactif
-    if (filterActif !== 'all') {
-      filtered = filtered.filter((service) => service.actif === filterActif);
-    }
+    // Format complet: "Lundi 15 janvier"
+    const joursSemaine = [
+      'Dimanche',
+      'Lundi',
+      'Mardi',
+      'Mercredi',
+      'Jeudi',
+      'Vendredi',
+      'Samedi',
+    ];
+    const mois = [
+      'janvier',
+      'février',
+      'mars',
+      'avril',
+      'mai',
+      'juin',
+      'juillet',
+      'août',
+      'septembre',
+      'octobre',
+      'novembre',
+      'décembre',
+    ];
 
-    // Filtre responsable
-    if (filterResponsable === 'with') {
-      filtered = filtered.filter((service) => service.responsable);
-    } else if (filterResponsable === 'without') {
-      filtered = filtered.filter((service) => !service.responsable);
-    }
+    const jourSemaine = joursSemaine[nextBirthday.getDay()];
+    const jour = nextBirthday.getDate();
+    const moisNom = mois[nextBirthday.getMonth()];
+    const dateFormat = `${jourSemaine} ${jour} ${moisNom}`;
 
-    // Tri
-    filtered.sort((a, b) => {
-      let comparison = 0;
-
-      if (sortField === 'nom') {
-        comparison = a.nom.localeCompare(b.nom);
-      } else if (sortField === 'societe') {
-        const societeA = societes.find((s) => s.id === a.societe)?.nom || '';
-        const societeB = societes.find((s) => s.id === b.societe)?.nom || '';
-        comparison = societeA.localeCompare(societeB);
-      } else if (sortField === 'date_creation') {
-        comparison = new Date(a.date_creation).getTime() - new Date(b.date_creation).getTime();
-      }
-
-      return sortOrder === 'asc' ? comparison : -comparison;
-    });
-
-    return filtered;
-  }, [services, searchTerm, filterSociete, filterActif, filterResponsable, sortField, sortOrder, societes]);
-
-  // ✅ CRUD Operations
-  const handleCreate = async (data: Omit<Service, 'id' | 'date_creation' | 'responsable_info'>) => {
-    try {
-      const newService = await serviceApi.createService(data);
-      setServices([...services, newService]);
-      setShowForm(false);
-      setError(null);
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de la création');
-    }
+    return { dateFormat, daysLeft };
   };
 
-  const handleUpdate = async (id: number, data: Partial<Service>) => {
-    try {
-      const updated = await serviceApi.updateService(id, data);
-      setServices(services.map((s) => (s.id === id ? updated : s)));
-      setEditingService(null);
-      setShowForm(false);
-      setError(null);
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de la modification');
-    }
-  };
+  const anniversaireInfo = getAnniversaireInfo();
+  const creneau = getCreneau();
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('Êtes-vous sûr de vouloir supprimer ce service ?')) {
-      return;
-    }
+  if (loading)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
 
-    try {
-      await serviceApi.deleteService(id);
-      setServices(services.filter((s) => s.id !== id));
-      setError(null);
-    } catch (err: any) {
-      setError(err.message || 'Erreur lors de la suppression');
-    }
-  };
-
-  // 📊 Export CSV
-  const handleExportCSV = () => {
-    const headers = ['ID', 'Nom', 'Société', 'Description', 'Responsable', 'Actif', 'Date création'];
-    const rows = filteredAndSortedServices.map((service) => {
-      const societe = societes.find((s) => s.id === service.societe);
-      return [
-        service.id,
-        service.nom,
-        societe?.nom || 'N/A',
-        service.description || '',
-        service.responsable_info || 'Aucun',
-        service.actif ? 'Oui' : 'Non',
-        new Date(service.date_creation).toLocaleDateString('fr-FR'),
-      ];
-    });
-
-    const csvContent = [
-      headers.join(','),
-      ...rows.map((row) => row.join(',')),
-    ].join('\n');
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `services_${new Date().toISOString().split('T')[0]}.csv`;
-    link.click();
-  };
-
-  const handleSort = (field: 'nom' | 'societe' | 'date_creation') => {
-    if (sortField === field) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortField(field);
-      setSortOrder('asc');
-    }
-  };
-
-  if (!mounted) return null;
+  if (error || !salarie)
+    return (
+      <div className="p-6">
+        <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          <p className="text-red-800 dark:text-red-200">{error}</p>
+          {error?.includes('authentifi') && (
+            <button
+              onClick={() => router.push('/login')}
+              className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Se connecter...
+            </button>
+          )}
+        </div>
+      </div>
+    );
 
   return (
-    <div className="flex flex-col gap-6 p-6">
-      {/* 🎯 En-tête */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
-            Paramètres Services
-          </h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            {filteredAndSortedServices.length} service{filteredAndSortedServices.length > 1 ? 's' : ''} trouvé{filteredAndSortedServices.length > 1 ? 's' : ''}
-          </p>
-        </div>
-
-        <div className="flex gap-2">
-          {/* Bouton Statistiques */}
-          <button
-            onClick={() => setShowStats(!showStats)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
-              showStats
-                ? 'bg-blue-50 dark:bg-blue-950 border-blue-500 text-blue-700 dark:text-blue-300'
-                : 'border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
-            }`}
-          >
-            <BarChart3 size={18} />
-            Stats
-          </button>
-
-          {/* Bouton Export */}
-          <button
-            onClick={handleExportCSV}
-            disabled={filteredAndSortedServices.length === 0}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50"
-          >
-            <Download size={18} />
-            Export
-          </button>
-
-          {/* Bouton Rafraîchir */}
-          <button
-            onClick={loadData}
-            disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50"
-          >
-            <RefreshCw size={18} className={loading ? 'animate-spin' : ''} />
-            Rafraîchir
-          </button>
-
-          {/* Bouton Ajouter */}
-          <button
-            onClick={() => {
-              setEditingService(null);
-              setShowForm(true);
-            }}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors"
-          >
-            <Plus size={18} />
-            Ajouter
-          </button>
-        </div>
-      </div>
-
-      {/* 📊 Statistiques */}
-      {showStats && (
-        <ServiceStats services={filteredAndSortedServices} societes={societes} />
-      )}
-
-      {/* 🔍 Barre de recherche et filtres */}
-      <div className="flex flex-col md:flex-row gap-4 p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
-        {/* Recherche */}
-        <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Rechercher un service..."
-            className="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
-          />
-        </div>
-
-        {/* Filtre Société */}
-        <div className="relative">
-          <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-          <select
-            value={filterSociete}
-            onChange={(e) => setFilterSociete(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-            className="pl-10 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors appearance-none cursor-pointer"
-          >
-            <option value="all">Toutes les sociétés</option>
-            {societes.map((societe) => (
-              <option key={societe.id} value={societe.id}>
-                {societe.nom}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Filtre Responsable */}
-        <select
-          value={filterResponsable}
-          onChange={(e) => setFilterResponsable(e.target.value as 'with' | 'without' | 'all')}
-          className="px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors cursor-pointer"
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Bouton retour */}
+        <button
+          onClick={() => router.back()}
+          className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white mb-6 transition-colors"
         >
-          <option value="all">Tous les responsables</option>
-          <option value="with">Avec responsable</option>
-          <option value="without">Sans responsable</option>
-        </select>
+          <ArrowLeft size={20} />
+          Retour
+        </button>
 
-        {/* Filtre Actif */}
-        <select
-          value={filterActif === 'all' ? 'all' : filterActif.toString()}
-          onChange={(e) =>
-            setFilterActif(e.target.value === 'all' ? 'all' : e.target.value === 'true')
-          }
-          className="px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors cursor-pointer"
-        >
-          <option value="all">Tous les statuts</option>
-          <option value="true">Actifs</option>
-          <option value="false">Inactifs</option>
-        </select>
-      </div>
+        {/* En-tête avec photo et infos principales */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 mb-6 text-white shadow-lg">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            {/* Photo */}
+            <div className="relative">
+              {salarie.photo ? (
+                <img
+                  src={salarie.photo}
+                  alt={`${salarie.prenom} ${salarie.nom}`}
+                  className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-xl"
+                />
+              ) : (
+                <div className="w-32 h-32 rounded-full bg-white/20 flex items-center justify-center text-4xl font-bold border-4 border-white shadow-xl">
+                  {salarie.prenom.charAt(0)}
+                  {salarie.nom.charAt(0)}
+                </div>
+              )}
+            </div>
 
-      {/* ❌ Message d'erreur */}
-      {error && (
-        <div className="flex gap-3 p-4 rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800">
-          <AlertCircle className="text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" size={18} />
-          <div>
-            <p className="font-medium text-red-900 dark:text-red-200">{error}</p>
+            {/* Infos */}
+            <div className="flex-1 text-center md:text-left">
+              <h1 className="text-4xl font-bold mb-2">
+                {salarie.prenom} {salarie.nom}
+              </h1>
+              <p className="text-xl text-blue-100 mb-3">{salarie.poste}</p>
+              <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                <div className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full">
+                  <MapPin size={16} />
+                  <span>{getRegions()}</span>
+                </div>
+                <div className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full">
+                  <Building2 size={16} />
+                  <span>{getSocieteName(salarie.societe)}</span>
+                </div>
+                <div className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full">
+                  <Award size={16} />
+                  <span>{getGradeName(salarie.grade)}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex gap-2">
+              <button
+                onClick={() =>
+                  router.push(`/annuaires/salaries/${salarie.id}/edit`)
+                }
+                className="p-3 bg-white/10 hover:bg-white/20 rounded-lg transition-colors"
+                title="Modifier"
+              >
+                <Edit size={20} />
+              </button>
+              <button
+                className="p-3 bg-white/10 hover:bg-red-500/80 rounded-lg transition-colors"
+                title="Supprimer"
+              >
+                <Trash2 size={20} />
+              </button>
+            </div>
           </div>
         </div>
-      )}
 
-      {/* 📊 Tableau ou formulaire */}
-      {!showForm ? (
-        <>
-          {loading ? (
-            <div className="flex items-center justify-center py-12">
-              <Loader2 className="animate-spin text-blue-600 dark:text-blue-400" size={32} />
-            </div>
-          ) : filteredAndSortedServices.length === 0 ? (
-            <div className="text-center py-12 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
-              <p className="text-slate-500 dark:text-slate-400">
-                {searchTerm || filterSociete !== 'all' || filterActif !== 'all' || filterResponsable !== 'all'
-                  ? 'Aucun service ne correspond aux filtres'
-                  : 'Aucun service trouvé'}
-              </p>
-            </div>
-          ) : (
-            <ServiceTable
-              services={filteredAndSortedServices}
-              societes={societes}
-              onEdit={(service) => {
-                setEditingService(service);
-                setShowForm(true);
-              }}
-              onDelete={handleDelete}
-              sortField={sortField}
-              sortOrder={sortOrder}
-              onSort={handleSort}
-            />
-          )}
-        </>
-      ) : (
-        <ServiceForm
-          service={editingService}
-          societes={societes}
-          salaries={salaries}
-          onSave={editingService ? (data) => handleUpdate(editingService.id, data) : handleCreate}
-          onCancel={() => {
-            setShowForm(false);
-            setEditingService(null);
-          }}
-        />
-      )}
-    </div>
-  );
-}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Colonne gauche */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Identité */}
+            <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                <User size={20} className="text-blue-600" />
+                Identité
+              </h2>
+              <div className="grid grid-cols-2 gap-4">
+                {/* Nom */}
+                <div>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                    Nom
+                  </p>
+                  <p className="font-semibold text-slate-900 dark:text-white">
+                    {salarie.nom}
+                  </p>
+                </div>
+
+                {/* Prénom */}
+                <div>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                    Prénom
+                  </p>
+                  <p className="font-semibold text-slate-900 dark:text-white">
+                    {salarie.prenom}
+                  </p>
