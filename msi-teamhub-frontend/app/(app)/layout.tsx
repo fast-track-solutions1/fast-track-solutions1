@@ -25,6 +25,7 @@ const settingsMenu = [
   { label: 'Paramètres services', href: '/settings/services', icon: Briefcase },
   { label: 'Paramètres départements', href: '/settings/departments', icon: Building },
   { label: 'Paramètres équipements', href: '/settings/equipment', icon: Wrench },
+  { label: 'Paramètres salariés', href: '/settings/salaries', icon: Users },
 ];
 
 const annuairesMenu = [

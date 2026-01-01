@@ -180,7 +180,13 @@ class GenericImporter:
             list: Noms des champs importables
         """
         exclude = self.config.get('exclude_fields', [])
-        return [f.name for f in self.Model._meta.get_fields() if f.name not in exclude and not f.many_to_many]
+        return [
+    f.name for f in self.Model._meta.get_fields() 
+    if f.name not in exclude 
+    and not f.many_to_many
+    and not (f.auto_created and not f.concrete)
+]
+
 
     def generate_template(self) -> bytes:
         """

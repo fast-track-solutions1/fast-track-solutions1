@@ -1,243 +1,304 @@
-// lib/salarie-api.ts
+// @/lib/salarie-api.ts - Client API complet et fonctionnel pour les Salariés
 
-// Assurer que l'URL contient toujours /api
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
-// S'assurer que /api est présent dans l'URL
-const API_BASE_URL = BASE_URL.includes('/api') ? BASE_URL : `${BASE_URL}/api`;
-
-console.log('[salarie-api] API_BASE_URL:', API_BASE_URL);
+// ============================================================================
+// INTERFACES
+// ============================================================================
 
 export interface Salarie {
   id: number;
-  user: number | null;
   nom: string;
   prenom: string;
   matricule: string;
-  genre: 'm' | 'f';
-  date_naissance: string | null;
-  jour_mois_naissance: string | null;
-  telephone: string | null;
-  mail_professionnel: string | null;
-  telephone_professionnel: string | null;
-  extension_3cx: string | null;
+  genre: 'm' | 'f' | 'autre';
+  date_naissance?: string;
+  telephone?: string;
+  mail_professionnel?: string;
+  telephone_professionnel?: string;
+  extension_3cx?: string;
+  photo?: string;
   societe: number;
-  societe_nom?: string;
-  service: number | null;
-  service_nom?: string;
-  grade: number | null;
-  grade_nom?: string;
-  responsable_direct: number | null;
-  responsable_nom?: string;
-  poste: string | null;
+  service?: number | null;
+  grade?: number | null;
+  responsable_direct?: number | null;
+  poste?: string;
   departements: number[];
-  departements_list?: string[];
-  circuit: number | null;
+  circuit?: number | null;
   date_embauche: string;
-  anciennete?: string;
-  statut: 'actif' | 'suspendu' | 'absent' | 'conge' | 'demission' | 'licencie' | 'retraite';
-  date_sortie: string | null;
-  en_poste: boolean;
-  creneau_travail: number | null;
-  creneau_nom?: string;
-  statut_actuel?: string;
+  statut: 'actif' | 'inactif' | 'conge' | 'arret_maladie';
+  date_sortie?: string | null;
+  creneau_travail?: number | null;
+  en_poste?: boolean;
   date_creation: string;
   date_modification: string;
+  // Champs affichage
+  service_nom?: string;
+  grade_nom?: string;
+  societe_nom?: string;
+  responsable_direct_nom?: string;
 }
 
-export interface SalarieListResponse {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: Salarie[];
+interface ApiResponse<T = any> {
+  count?: number;
+  next?: string;
+  previous?: string;
+  results?: T[];
+  detail?: string;
+  error?: string;
 }
 
-// Récupérer tous les salariés
-export const getSalaries = async (): Promise<Salarie[]> => {
-  try {
-    const token = localStorage.getItem('access_token');
-    if (!token) {
-      console.warn('⚠️ Aucun token trouvé, vérifiez votre authentification');
+// ============================================================================
+// CLASSE API
+// ============================================================================
+
+class SalarieApi {
+  private baseUrl: string;
+  private token: string | null = null;
+
+  constructor() {
+    this.baseUrl = `${API_BASE}/api/salaries`;
+    this.loadToken();
+  }
+
+  /**
+   * Charge le token depuis localStorage
+   */
+  private loadToken() {
+    if (typeof window !== 'undefined') {
+      this.token = localStorage.getItem('access_token');
+    }
+  }
+
+  /**
+   * Construit les headers avec le token
+   */
+  private getHeaders(): HeadersInit {
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`;
     }
 
-    const url = `${API_BASE_URL}/salaries/`;
-    console.log(`[getSalaries] Appel API : ${url}`);
+    return headers;
+  }
 
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
+  /**
+   * Gère les erreurs API
+   */
+  private async handleError(response: Response) {
+    let errorData: any = {};
+    
+    try {
+      errorData = await response.json();
+    } catch (e) {
+      // Si on ne peut pas parser JSON, utiliser le statusText
+    }
+
+    const message = errorData?.detail || errorData?.error || `Erreur ${response.status}`;
+    console.error('🔴 Erreur API:', {
+      status: response.status,
+      statusText: response.statusText,
+      message,
+      detail: errorData,
     });
 
-    console.log(`[getSalaries] Status: ${response.status}`);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`[getSalaries] Erreur ${response.status}:`, errorText);
-      throw new Error(`Erreur ${response.status}: Impossible de récupérer les salariés`);
-    }
-
-    const data = await response.json();
-    console.log(`[getSalaries] ✅ Succès, ${Array.isArray(data) ? data.length : data.results?.length || 0} résultats`);
-    
-    // ✅ Toujours retourner un tableau
-    return Array.isArray(data) ? data : (data.results || []);
-    
-  } catch (error: any) {
-    console.error('[getSalaries] Erreur complète:', error);
+    const error = new Error(message);
+    (error as any).status = response.status;
+    (error as any).data = errorData;
     throw error;
   }
-};
 
-// Récupérer un salarié par ID
-export const getSalarie = async (id: number): Promise<Salarie> => {
+/**
+ * GET /api/salaries/ - Récupère tous les salariés (toutes les pages)
+ */
+async getSalaries(): Promise<Salarie[]> {
   try {
-    const token = localStorage.getItem('access_token');
-    const url = `${API_BASE_URL}/salaries/${id}/`;
-
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`[getSalarie] Erreur ${response.status}:`, errorText);
-      throw new Error(`Erreur ${response.status}: Impossible de récupérer le salarié`);
+    let allSalaries: Salarie[] = [];
+    let url: string | null = `${this.baseUrl}/`;
+    
+    // Charger toutes les pages
+    while (url) {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.getHeaders(),
+        credentials: 'include',
+      });
+      
+      if (!response.ok) {
+        await this.handleError(response);
+      }
+      
+      const data: ApiResponse<Salarie> = await response.json();
+      
+      // Ajouter les résultats de cette page
+      allSalaries = [...allSalaries, ...(data.results || [])];
+      
+      // Passer à la page suivante (null si dernière page)
+      url = data.next || null;
     }
-
-    return await response.json();
-  } catch (error: any) {
-    console.error('[getSalarie] Erreur:', error.message);
+    
+    console.log(`✅ ${allSalaries.length} salariés chargés au total`);
+    return allSalaries;
+  } catch (error) {
+    console.error('❌ Erreur getSalaries:', error);
     throw error;
   }
-};
+}
 
-// Créer un salarié
-export async function createSalarie(data: Omit<Salarie, 'id'> | FormData): Promise<Salarie> {
-  const token = localStorage.getItem('access_token');
 
-  // Déterminer si c'est du FormData ou du JSON
-  const isFormData = data instanceof FormData;
+  /**
+   * GET /api/salaries/{id}/ - Récupère un salarié
+   */
+  async getSalarieById(id: number): Promise<Salarie> {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}/`, {
+        method: 'GET',
+        headers: this.getHeaders(),
+        credentials: 'include',
+      });
 
-  const headers: HeadersInit = {
-    'Authorization': `Bearer ${token}`,
-  };
-
-  // Si ce n'est pas FormData, ajouter Content-Type JSON
-  if (!isFormData) {
-    headers['Content-Type'] = 'application/json';
-  }
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/salaries/`, {
-      method: 'POST',
-      headers,
-      body: isFormData ? data : JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`[createSalarie] Erreur ${response.status}:`, errorText);
-
-      // Parser l'erreur pour affichage
-      let errorData;
-      try {
-        errorData = JSON.parse(errorText);
-      } catch {
-        errorData = errorText;
+      if (!response.ok) {
+        await this.handleError(response);
       }
 
-      throw { response: { data: errorData }, message: `Erreur ${response.status}` };
+      return await response.json();
+    } catch (error) {
+      console.error(`❌ Erreur getSalarieById(${id}):`, error);
+      throw error;
     }
-
-    return await response.json();
-  } catch (error: any) {
-    console.error('[createSalarie] Exception:', error);
-    throw error;
-  }
-}
-
-// Mettre à jour un salarié
-export async function updateSalarie(id: number, data: Partial<Salarie> | FormData): Promise<Salarie> {
-  const token = localStorage.getItem('access_token');
-
-  // Déterminer si c'est du FormData ou du JSON
-  const isFormData = data instanceof FormData;
-
-  const headers: HeadersInit = {
-    'Authorization': `Bearer ${token}`,
-  };
-
-  // Si ce n'est pas FormData, ajouter Content-Type JSON
-  if (!isFormData) {
-    headers['Content-Type'] = 'application/json';
   }
 
+  /**
+   * POST /api/salaries/ - Crée un nouveau salarié
+   */
+  async createSalarie(
+    data: Omit<Salarie, 'id' | 'date_creation' | 'date_modification'>
+  ): Promise<Salarie> {
+    try {
+      console.log('📤 Création salarié avec données:', data);
+
+      const response = await fetch(`${this.baseUrl}/`, {
+        method: 'POST',
+        headers: this.getHeaders(),
+        credentials: 'include',
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        await this.handleError(response);
+      }
+
+      const created = await response.json();
+      console.log('✅ Salarié créé:', created);
+      return created;
+    } catch (error) {
+      console.error('❌ Erreur createSalarie:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * PUT /api/salaries/{id}/ - Met à jour un salarié
+   */
+  async updateSalarie(id: number, data: Partial<Salarie>): Promise<Salarie> {
   try {
-    const response = await fetch(`${API_BASE_URL}/salaries/${id}/`, {
+    console.log(`📝 Mise à jour salarié ${id}:`, data);
+
+    // 1️⃣ Récupérer le salarié actuel
+    const current = await this.getSalarieById(id);
+    console.log('📋 Salarié actuel:', current);
+
+    // 2️⃣ Fusionner les données
+    const mergedData = {
+      ...current,
+      ...data,
+    };
+
+    // 3️⃣ Créer un objet propre avec SEULEMENT les champs attendus
+    const cleanData = {
+      nom: mergedData.nom,
+      prenom: mergedData.prenom,
+      matricule: mergedData.matricule,
+      genre: mergedData.genre,
+      date_naissance: mergedData.date_naissance,
+      telephone: mergedData.telephone,
+      mail_professionnel: mergedData.mail_professionnel,
+      telephone_professionnel: mergedData.telephone_professionnel,
+      extension_3cx: mergedData.extension_3cx,
+      photo: mergedData.photo,
+      societe: mergedData.societe,
+      service: mergedData.service,
+      grade: mergedData.grade,
+      responsable_direct: mergedData.responsable_direct,
+      poste: mergedData.poste,
+      departements: mergedData.departements,
+      circuit: mergedData.circuit,
+      date_embauche: mergedData.date_embauche,
+      statut: mergedData.statut,
+      date_sortie: mergedData.date_sortie,
+      creneau_travail: mergedData.creneau_travail,
+      en_poste: mergedData.en_poste,
+    };
+
+    console.log('🔍 responsable_direct dans cleanData:', cleanData.responsable_direct);
+    console.log('🔍 departements dans cleanData:', cleanData.departements);
+    console.log('📤 Données NETTOYÉES (JSON):', JSON.stringify(cleanData, null, 2));
+
+    // 4️⃣ Envoyer
+    const response = await fetch(`${this.baseUrl}/${id}/`, {
       method: 'PUT',
-      headers,
-      body: isFormData ? data : JSON.stringify(data),
+      headers: this.getHeaders(),
+      credentials: 'include',
+      body: JSON.stringify(cleanData),
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`[updateSalarie] Erreur ${response.status}:`, errorText);
-
-      // Parser l'erreur pour affichage
-      let errorData;
-      try {
-        errorData = JSON.parse(errorText);
-      } catch {
-        errorData = errorText;
-      }
-
-      throw { response: { data: errorData }, message: `Erreur ${response.status}` };
+      await this.handleError(response);
     }
 
-    return await response.json();
-  } catch (error: any) {
-    console.error('[updateSalarie] Exception:', error);
+    const updated = await response.json();
+console.log('✅ Salarié mis à jour (JSON):', JSON.stringify(updated, null, 2));
+console.log('🔍 responsable_direct retourné:', updated.responsable_direct);
+console.log('🔍 departements retournés:', updated.departements);
+return updated;
+
+
+  } catch (error) {
+    console.error(`❌ Erreur updateSalarie(${id}):`, error);
     throw error;
   }
 }
 
-// Supprimer un salarié
-export const deleteSalarie = async (id: number): Promise<void> => {
-  try {
-    const token = localStorage.getItem('access_token');
-    const url = `${API_BASE_URL}/salaries/${id}/`;
 
-    const response = await fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
+  /**
+   * DELETE /api/salaries/{id}/ - Supprime un salarié
+   */
+  async deleteSalarie(id: number): Promise<void> {
+    try {
+      const response = await fetch(`${this.baseUrl}/${id}/`, {
+        method: 'DELETE',
+        headers: this.getHeaders(),
+        credentials: 'include',
+      });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`[deleteSalarie] Erreur ${response.status}:`, errorText);
-      throw new Error(`Erreur ${response.status}: Impossible de supprimer le salarié`);
+      if (!response.ok && response.status !== 204) {
+        await this.handleError(response);
+      }
+
+      console.log(`✅ Salarié ${id} supprimé`);
+    } catch (error) {
+      console.error(`❌ Erreur deleteSalarie(${id}):`, error);
+      throw error;
     }
-  } catch (error: any) {
-    console.error('[deleteSalarie] Erreur:', error.message);
-    throw error;
   }
-};
+}
 
-// Export objet API
-export const salarieApi = {
-  getSalaries,
-  getSalarie,
-  createSalarie,
-  updateSalarie,
-  deleteSalarie,
-};
+// ============================================================================
+// EXPORT
+// ============================================================================
+
+export const salarieApi = new SalarieApi();

@@ -19635,3 +19635,505 @@ LINE 1: ...ne_professionnel", "api_salarie"."extension_3cx", "api_salar...
                                                              ^
 
 ERROR 2025-12-11 16:22:32,210 basehttp 113 132436462663360 "GET /admin/api/salarie/ HTTP/1.1" 500 169602
+ERROR 2026-01-01 21:21:17,377 import_utils 220 137809931269824 Erreur ligne 2: null value in column "societe_id" of relation "api_salarie" violates not-null constraint
+DETAIL:  Failing row contains (26, JAMAI, Amen Allah, , , null, null, a.allahjamai@mysupport-int.com, null, 100, null, null, actif, null, t, 2026-01-01 20:21:17.372852+00, 2026-01-01 20:21:17.372863+00, null, null, null, null, null, null, null, ).
+
+ERROR 2026-01-01 21:21:17,388 import_utils 220 137809931269824 Erreur ligne 3: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,389 import_utils 220 137809931269824 Erreur ligne 4: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,390 import_utils 220 137809931269824 Erreur ligne 5: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,391 import_utils 220 137809931269824 Erreur ligne 6: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,393 import_utils 220 137809931269824 Erreur ligne 7: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,394 import_utils 220 137809931269824 Erreur ligne 8: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,395 import_utils 220 137809931269824 Erreur ligne 9: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,396 import_utils 220 137809931269824 Erreur ligne 10: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,398 import_utils 220 137809931269824 Erreur ligne 11: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,399 import_utils 220 137809931269824 Erreur ligne 12: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,401 import_utils 220 137809931269824 Erreur ligne 13: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,402 import_utils 220 137809931269824 Erreur ligne 14: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,403 import_utils 220 137809931269824 Erreur ligne 15: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,404 import_utils 220 137809931269824 Erreur ligne 16: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,405 import_utils 220 137809931269824 Erreur ligne 17: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,407 import_utils 220 137809931269824 Erreur ligne 18: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,408 import_utils 220 137809931269824 Erreur ligne 19: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,409 import_utils 220 137809931269824 Erreur ligne 20: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,410 import_utils 220 137809931269824 Erreur ligne 21: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,411 import_utils 220 137809931269824 Erreur ligne 22: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,412 import_utils 220 137809931269824 Erreur ligne 23: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,413 import_utils 220 137809931269824 Erreur ligne 24: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,415 import_utils 220 137809931269824 Erreur ligne 25: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,416 import_utils 220 137809931269824 Erreur ligne 26: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,417 import_utils 220 137809931269824 Erreur ligne 27: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,418 import_utils 220 137809931269824 Erreur ligne 28: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,419 import_utils 220 137809931269824 Erreur ligne 29: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,420 import_utils 220 137809931269824 Erreur ligne 30: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,421 import_utils 220 137809931269824 Erreur ligne 31: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,422 import_utils 220 137809931269824 Erreur ligne 32: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,423 import_utils 220 137809931269824 Erreur ligne 33: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,423 import_utils 220 137809931269824 Erreur ligne 34: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,424 import_utils 220 137809931269824 Erreur ligne 35: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,425 import_utils 220 137809931269824 Erreur ligne 36: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,426 import_utils 220 137809931269824 Erreur ligne 37: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,427 import_utils 220 137809931269824 Erreur ligne 38: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,428 import_utils 220 137809931269824 Erreur ligne 39: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,428 import_utils 220 137809931269824 Erreur ligne 40: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,429 import_utils 220 137809931269824 Erreur ligne 41: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,430 import_utils 220 137809931269824 Erreur ligne 42: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,431 import_utils 220 137809931269824 Erreur ligne 43: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,432 import_utils 220 137809931269824 Erreur ligne 44: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,434 import_utils 220 137809931269824 Erreur ligne 45: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,434 import_utils 220 137809931269824 Erreur ligne 46: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,435 import_utils 220 137809931269824 Erreur ligne 47: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,436 import_utils 220 137809931269824 Erreur ligne 48: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,437 import_utils 220 137809931269824 Erreur ligne 49: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,438 import_utils 220 137809931269824 Erreur ligne 50: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,439 import_utils 220 137809931269824 Erreur ligne 51: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,439 import_utils 220 137809931269824 Erreur ligne 52: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,440 import_utils 220 137809931269824 Erreur ligne 53: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,441 import_utils 220 137809931269824 Erreur ligne 54: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,442 import_utils 220 137809931269824 Erreur ligne 55: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,443 import_utils 220 137809931269824 Erreur ligne 56: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,444 import_utils 220 137809931269824 Erreur ligne 57: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,444 import_utils 220 137809931269824 Erreur ligne 58: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,445 import_utils 220 137809931269824 Erreur ligne 59: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,446 import_utils 220 137809931269824 Erreur ligne 60: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,447 import_utils 220 137809931269824 Erreur ligne 61: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,448 import_utils 220 137809931269824 Erreur ligne 62: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,449 import_utils 220 137809931269824 Erreur ligne 63: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,450 import_utils 220 137809931269824 Erreur ligne 64: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,451 import_utils 220 137809931269824 Erreur ligne 65: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,452 import_utils 220 137809931269824 Erreur ligne 66: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,453 import_utils 220 137809931269824 Erreur ligne 67: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,454 import_utils 220 137809931269824 Erreur ligne 68: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,455 import_utils 220 137809931269824 Erreur ligne 69: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,455 import_utils 220 137809931269824 Erreur ligne 70: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,456 import_utils 220 137809931269824 Erreur ligne 71: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,457 import_utils 220 137809931269824 Erreur ligne 72: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,458 import_utils 220 137809931269824 Erreur ligne 73: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,459 import_utils 220 137809931269824 Erreur ligne 74: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,460 import_utils 220 137809931269824 Erreur ligne 75: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,460 import_utils 220 137809931269824 Erreur ligne 76: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:21:17,461 import_utils 220 137809931269824 Erreur ligne 77: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+ERROR 2026-01-01 21:27:18,042 import_utils 220 137809931269824 Erreur ligne 2: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,049 import_utils 220 137809931269824 Erreur ligne 3: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,055 import_utils 220 137809931269824 Erreur ligne 4: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,068 import_utils 220 137809931269824 Erreur ligne 5: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,076 import_utils 220 137809931269824 Erreur ligne 6: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,085 import_utils 220 137809931269824 Erreur ligne 7: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,093 import_utils 220 137809931269824 Erreur ligne 8: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,100 import_utils 220 137809931269824 Erreur ligne 9: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,106 import_utils 220 137809931269824 Erreur ligne 10: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,114 import_utils 220 137809931269824 Erreur ligne 11: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,120 import_utils 220 137809931269824 Erreur ligne 12: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,133 import_utils 220 137809931269824 Erreur ligne 13: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,140 import_utils 220 137809931269824 Erreur ligne 14: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,146 import_utils 220 137809931269824 Erreur ligne 15: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,153 import_utils 220 137809931269824 Erreur ligne 16: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,160 import_utils 220 137809931269824 Erreur ligne 17: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,167 import_utils 220 137809931269824 Erreur ligne 18: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,174 import_utils 220 137809931269824 Erreur ligne 19: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,179 import_utils 220 137809931269824 Erreur ligne 20: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,188 import_utils 220 137809931269824 Erreur ligne 21: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,196 import_utils 220 137809931269824 Erreur ligne 22: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,206 import_utils 220 137809931269824 Erreur ligne 23: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,215 import_utils 220 137809931269824 Erreur ligne 24: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,224 import_utils 220 137809931269824 Erreur ligne 25: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,232 import_utils 220 137809931269824 Erreur ligne 26: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,239 import_utils 220 137809931269824 Erreur ligne 27: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,246 import_utils 220 137809931269824 Erreur ligne 28: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,255 import_utils 220 137809931269824 Erreur ligne 29: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,262 import_utils 220 137809931269824 Erreur ligne 30: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,271 import_utils 220 137809931269824 Erreur ligne 31: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,279 import_utils 220 137809931269824 Erreur ligne 32: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,287 import_utils 220 137809931269824 Erreur ligne 33: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,294 import_utils 220 137809931269824 Erreur ligne 34: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,301 import_utils 220 137809931269824 Erreur ligne 35: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,307 import_utils 220 137809931269824 Erreur ligne 36: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,314 import_utils 220 137809931269824 Erreur ligne 37: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,321 import_utils 220 137809931269824 Erreur ligne 38: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,327 import_utils 220 137809931269824 Erreur ligne 39: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,333 import_utils 220 137809931269824 Erreur ligne 40: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,340 import_utils 220 137809931269824 Erreur ligne 41: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,345 import_utils 220 137809931269824 Erreur ligne 42: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,351 import_utils 220 137809931269824 Erreur ligne 43: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,358 import_utils 220 137809931269824 Erreur ligne 44: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,363 import_utils 220 137809931269824 Erreur ligne 45: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,368 import_utils 220 137809931269824 Erreur ligne 46: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,373 import_utils 220 137809931269824 Erreur ligne 47: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,378 import_utils 220 137809931269824 Erreur ligne 48: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,384 import_utils 220 137809931269824 Erreur ligne 49: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,389 import_utils 220 137809931269824 Erreur ligne 50: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,394 import_utils 220 137809931269824 Erreur ligne 51: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,400 import_utils 220 137809931269824 Erreur ligne 52: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,407 import_utils 220 137809931269824 Erreur ligne 53: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,412 import_utils 220 137809931269824 Erreur ligne 54: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,418 import_utils 220 137809931269824 Erreur ligne 55: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,425 import_utils 220 137809931269824 Erreur ligne 56: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,431 import_utils 220 137809931269824 Erreur ligne 57: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,439 import_utils 220 137809931269824 Erreur ligne 58: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,445 import_utils 220 137809931269824 Erreur ligne 59: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,451 import_utils 220 137809931269824 Erreur ligne 60: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,456 import_utils 220 137809931269824 Erreur ligne 61: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,461 import_utils 220 137809931269824 Erreur ligne 62: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,468 import_utils 220 137809931269824 Erreur ligne 63: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,474 import_utils 220 137809931269824 Erreur ligne 64: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,480 import_utils 220 137809931269824 Erreur ligne 65: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,488 import_utils 220 137809931269824 Erreur ligne 66: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,494 import_utils 220 137809931269824 Erreur ligne 67: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,500 import_utils 220 137809931269824 Erreur ligne 68: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,506 import_utils 220 137809931269824 Erreur ligne 69: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,512 import_utils 220 137809931269824 Erreur ligne 70: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,518 import_utils 220 137809931269824 Erreur ligne 71: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,523 import_utils 220 137809931269824 Erreur ligne 72: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,529 import_utils 220 137809931269824 Erreur ligne 73: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,537 import_utils 220 137809931269824 Erreur ligne 74: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,543 import_utils 220 137809931269824 Erreur ligne 75: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,549 import_utils 220 137809931269824 Erreur ligne 76: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:27:18,557 import_utils 220 137809931269824 Erreur ligne 77: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,313 import_utils 220 137809931269824 Erreur ligne 2: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,321 import_utils 220 137809931269824 Erreur ligne 3: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,328 import_utils 220 137809931269824 Erreur ligne 4: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,335 import_utils 220 137809931269824 Erreur ligne 5: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,345 import_utils 220 137809931269824 Erreur ligne 6: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,356 import_utils 220 137809931269824 Erreur ligne 7: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,362 import_utils 220 137809931269824 Erreur ligne 8: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,372 import_utils 220 137809931269824 Erreur ligne 9: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,380 import_utils 220 137809931269824 Erreur ligne 10: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,389 import_utils 220 137809931269824 Erreur ligne 11: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,396 import_utils 220 137809931269824 Erreur ligne 12: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,409 import_utils 220 137809931269824 Erreur ligne 13: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,419 import_utils 220 137809931269824 Erreur ligne 14: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,427 import_utils 220 137809931269824 Erreur ligne 15: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,434 import_utils 220 137809931269824 Erreur ligne 16: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,442 import_utils 220 137809931269824 Erreur ligne 17: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,450 import_utils 220 137809931269824 Erreur ligne 18: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,458 import_utils 220 137809931269824 Erreur ligne 19: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,465 import_utils 220 137809931269824 Erreur ligne 20: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,474 import_utils 220 137809931269824 Erreur ligne 21: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,481 import_utils 220 137809931269824 Erreur ligne 22: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,488 import_utils 220 137809931269824 Erreur ligne 23: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,497 import_utils 220 137809931269824 Erreur ligne 24: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,505 import_utils 220 137809931269824 Erreur ligne 25: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,511 import_utils 220 137809931269824 Erreur ligne 26: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,518 import_utils 220 137809931269824 Erreur ligne 27: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,528 import_utils 220 137809931269824 Erreur ligne 28: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,534 import_utils 220 137809931269824 Erreur ligne 29: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,542 import_utils 220 137809931269824 Erreur ligne 30: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,547 import_utils 220 137809931269824 Erreur ligne 31: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,553 import_utils 220 137809931269824 Erreur ligne 32: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,559 import_utils 220 137809931269824 Erreur ligne 33: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,565 import_utils 220 137809931269824 Erreur ligne 34: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,572 import_utils 220 137809931269824 Erreur ligne 35: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,579 import_utils 220 137809931269824 Erreur ligne 36: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,588 import_utils 220 137809931269824 Erreur ligne 37: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,595 import_utils 220 137809931269824 Erreur ligne 38: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,603 import_utils 220 137809931269824 Erreur ligne 39: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,611 import_utils 220 137809931269824 Erreur ligne 40: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,619 import_utils 220 137809931269824 Erreur ligne 41: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,626 import_utils 220 137809931269824 Erreur ligne 42: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,635 import_utils 220 137809931269824 Erreur ligne 43: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,644 import_utils 220 137809931269824 Erreur ligne 44: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,655 import_utils 220 137809931269824 Erreur ligne 45: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,664 import_utils 220 137809931269824 Erreur ligne 46: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,672 import_utils 220 137809931269824 Erreur ligne 47: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,680 import_utils 220 137809931269824 Erreur ligne 48: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,688 import_utils 220 137809931269824 Erreur ligne 49: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,696 import_utils 220 137809931269824 Erreur ligne 50: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,705 import_utils 220 137809931269824 Erreur ligne 51: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,712 import_utils 220 137809931269824 Erreur ligne 52: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,718 import_utils 220 137809931269824 Erreur ligne 53: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,724 import_utils 220 137809931269824 Erreur ligne 54: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,730 import_utils 220 137809931269824 Erreur ligne 55: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,736 import_utils 220 137809931269824 Erreur ligne 56: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,742 import_utils 220 137809931269824 Erreur ligne 57: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,748 import_utils 220 137809931269824 Erreur ligne 58: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,755 import_utils 220 137809931269824 Erreur ligne 59: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,761 import_utils 220 137809931269824 Erreur ligne 60: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,767 import_utils 220 137809931269824 Erreur ligne 61: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,774 import_utils 220 137809931269824 Erreur ligne 62: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,780 import_utils 220 137809931269824 Erreur ligne 63: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,786 import_utils 220 137809931269824 Erreur ligne 64: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,792 import_utils 220 137809931269824 Erreur ligne 65: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,797 import_utils 220 137809931269824 Erreur ligne 66: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,804 import_utils 220 137809931269824 Erreur ligne 67: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,811 import_utils 220 137809931269824 Erreur ligne 68: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,816 import_utils 220 137809931269824 Erreur ligne 69: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,825 import_utils 220 137809931269824 Erreur ligne 70: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,830 import_utils 220 137809931269824 Erreur ligne 71: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,838 import_utils 220 137809931269824 Erreur ligne 72: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,844 import_utils 220 137809931269824 Erreur ligne 73: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,849 import_utils 220 137809931269824 Erreur ligne 74: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,856 import_utils 220 137809931269824 Erreur ligne 75: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,861 import_utils 220 137809931269824 Erreur ligne 76: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:32:25,867 import_utils 220 137809931269824 Erreur ligne 77: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,561 import_utils 220 137809931269824 Erreur ligne 2: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,571 import_utils 220 137809931269824 Erreur ligne 3: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,584 import_utils 220 137809931269824 Erreur ligne 4: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,621 import_utils 220 137809931269824 Erreur ligne 5: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,631 import_utils 220 137809931269824 Erreur ligne 6: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,640 import_utils 220 137809901897408 Erreur ligne 2: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,644 import_utils 220 137809931269824 Erreur ligne 7: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,651 import_utils 220 137809901897408 Erreur ligne 3: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,659 import_utils 220 137809931269824 Erreur ligne 8: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,667 import_utils 220 137809901897408 Erreur ligne 4: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,676 import_utils 220 137809931269824 Erreur ligne 9: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,685 import_utils 220 137809901897408 Erreur ligne 5: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,688 import_utils 220 137809931269824 Erreur ligne 10: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,696 import_utils 220 137809901897408 Erreur ligne 6: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,699 import_utils 220 137809931269824 Erreur ligne 11: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,708 import_utils 220 137809901897408 Erreur ligne 7: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,710 import_utils 220 137809931269824 Erreur ligne 12: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,720 import_utils 220 137809901897408 Erreur ligne 8: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,723 import_utils 220 137809931269824 Erreur ligne 13: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,731 import_utils 220 137809901897408 Erreur ligne 9: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,733 import_utils 220 137809931269824 Erreur ligne 14: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,747 import_utils 220 137809901897408 Erreur ligne 10: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,747 import_utils 220 137809931269824 Erreur ligne 15: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,759 import_utils 220 137809901897408 Erreur ligne 11: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,759 import_utils 220 137809931269824 Erreur ligne 16: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,772 import_utils 220 137809901897408 Erreur ligne 12: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,772 import_utils 220 137809931269824 Erreur ligne 17: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,786 import_utils 220 137809901897408 Erreur ligne 13: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,787 import_utils 220 137809931269824 Erreur ligne 18: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,799 import_utils 220 137809901897408 Erreur ligne 14: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,799 import_utils 220 137809931269824 Erreur ligne 19: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,812 import_utils 220 137809901897408 Erreur ligne 15: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,812 import_utils 220 137809931269824 Erreur ligne 20: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,825 import_utils 220 137809901897408 Erreur ligne 16: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,826 import_utils 220 137809931269824 Erreur ligne 21: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,842 import_utils 220 137809901897408 Erreur ligne 17: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,842 import_utils 220 137809931269824 Erreur ligne 22: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,858 import_utils 220 137809901897408 Erreur ligne 18: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,858 import_utils 220 137809931269824 Erreur ligne 23: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,873 import_utils 220 137809901897408 Erreur ligne 19: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,873 import_utils 220 137809931269824 Erreur ligne 24: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,883 import_utils 220 137809901897408 Erreur ligne 20: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,884 import_utils 220 137809931269824 Erreur ligne 25: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,894 import_utils 220 137809901897408 Erreur ligne 21: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,894 import_utils 220 137809931269824 Erreur ligne 26: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,905 import_utils 220 137809901897408 Erreur ligne 22: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,905 import_utils 220 137809931269824 Erreur ligne 27: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,915 import_utils 220 137809901897408 Erreur ligne 23: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,915 import_utils 220 137809931269824 Erreur ligne 28: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,928 import_utils 220 137809901897408 Erreur ligne 24: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,928 import_utils 220 137809931269824 Erreur ligne 29: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,940 import_utils 220 137809901897408 Erreur ligne 25: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,940 import_utils 220 137809931269824 Erreur ligne 30: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,950 import_utils 220 137809901897408 Erreur ligne 26: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,950 import_utils 220 137809931269824 Erreur ligne 31: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,963 import_utils 220 137809901897408 Erreur ligne 27: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,963 import_utils 220 137809931269824 Erreur ligne 32: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,979 import_utils 220 137809901897408 Erreur ligne 28: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,979 import_utils 220 137809931269824 Erreur ligne 33: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,995 import_utils 220 137809901897408 Erreur ligne 29: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:32,995 import_utils 220 137809931269824 Erreur ligne 34: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,013 import_utils 220 137809901897408 Erreur ligne 30: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,014 import_utils 220 137809931269824 Erreur ligne 35: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,032 import_utils 220 137809901897408 Erreur ligne 31: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,032 import_utils 220 137809931269824 Erreur ligne 36: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,047 import_utils 220 137809901897408 Erreur ligne 32: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,047 import_utils 220 137809931269824 Erreur ligne 37: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,061 import_utils 220 137809901897408 Erreur ligne 33: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,061 import_utils 220 137809931269824 Erreur ligne 38: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,077 import_utils 220 137809931269824 Erreur ligne 39: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,077 import_utils 220 137809901897408 Erreur ligne 34: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,093 import_utils 220 137809931269824 Erreur ligne 40: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,093 import_utils 220 137809901897408 Erreur ligne 35: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,110 import_utils 220 137809931269824 Erreur ligne 41: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,110 import_utils 220 137809901897408 Erreur ligne 36: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,126 import_utils 220 137809931269824 Erreur ligne 42: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,126 import_utils 220 137809901897408 Erreur ligne 37: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,147 import_utils 220 137809931269824 Erreur ligne 43: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,147 import_utils 220 137809901897408 Erreur ligne 38: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,161 import_utils 220 137809931269824 Erreur ligne 44: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,161 import_utils 220 137809901897408 Erreur ligne 39: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,179 import_utils 220 137809931269824 Erreur ligne 45: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,179 import_utils 220 137809901897408 Erreur ligne 40: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,200 import_utils 220 137809931269824 Erreur ligne 46: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,201 import_utils 220 137809901897408 Erreur ligne 41: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,222 import_utils 220 137809931269824 Erreur ligne 47: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,225 import_utils 220 137809901897408 Erreur ligne 42: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,247 import_utils 220 137809931269824 Erreur ligne 48: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,251 import_utils 220 137809901897408 Erreur ligne 43: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,272 import_utils 220 137809931269824 Erreur ligne 49: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,276 import_utils 220 137809901897408 Erreur ligne 44: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,295 import_utils 220 137809931269824 Erreur ligne 50: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,301 import_utils 220 137809901897408 Erreur ligne 45: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,319 import_utils 220 137809931269824 Erreur ligne 51: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,323 import_utils 220 137809901897408 Erreur ligne 46: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,340 import_utils 220 137809931269824 Erreur ligne 52: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,350 import_utils 220 137809901897408 Erreur ligne 47: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,365 import_utils 220 137809931269824 Erreur ligne 53: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,371 import_utils 220 137809901897408 Erreur ligne 48: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,386 import_utils 220 137809931269824 Erreur ligne 54: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,390 import_utils 220 137809901897408 Erreur ligne 49: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,404 import_utils 220 137809931269824 Erreur ligne 55: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,412 import_utils 220 137809901897408 Erreur ligne 50: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,424 import_utils 220 137809931269824 Erreur ligne 56: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,436 import_utils 220 137809901897408 Erreur ligne 51: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,446 import_utils 220 137809931269824 Erreur ligne 57: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,460 import_utils 220 137809901897408 Erreur ligne 52: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,472 import_utils 220 137809931269824 Erreur ligne 58: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,481 import_utils 220 137809901897408 Erreur ligne 53: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,493 import_utils 220 137809931269824 Erreur ligne 59: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,507 import_utils 220 137809901897408 Erreur ligne 54: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,519 import_utils 220 137809931269824 Erreur ligne 60: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,531 import_utils 220 137809901897408 Erreur ligne 55: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,541 import_utils 220 137809931269824 Erreur ligne 61: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,553 import_utils 220 137809901897408 Erreur ligne 56: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,561 import_utils 220 137809931269824 Erreur ligne 62: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,572 import_utils 220 137809901897408 Erreur ligne 57: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,578 import_utils 220 137809931269824 Erreur ligne 63: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,585 import_utils 220 137809901897408 Erreur ligne 58: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,593 import_utils 220 137809931269824 Erreur ligne 64: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,598 import_utils 220 137809901897408 Erreur ligne 59: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,609 import_utils 220 137809931269824 Erreur ligne 65: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,613 import_utils 220 137809901897408 Erreur ligne 60: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,626 import_utils 220 137809931269824 Erreur ligne 66: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,630 import_utils 220 137809901897408 Erreur ligne 61: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,642 import_utils 220 137809931269824 Erreur ligne 67: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,644 import_utils 220 137809901897408 Erreur ligne 62: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,656 import_utils 220 137809931269824 Erreur ligne 68: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,659 import_utils 220 137809901897408 Erreur ligne 63: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,672 import_utils 220 137809931269824 Erreur ligne 69: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,673 import_utils 220 137809901897408 Erreur ligne 64: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,688 import_utils 220 137809931269824 Erreur ligne 70: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,688 import_utils 220 137809901897408 Erreur ligne 65: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,703 import_utils 220 137809931269824 Erreur ligne 71: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,704 import_utils 220 137809901897408 Erreur ligne 66: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,719 import_utils 220 137809931269824 Erreur ligne 72: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,719 import_utils 220 137809901897408 Erreur ligne 67: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,733 import_utils 220 137809931269824 Erreur ligne 73: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,735 import_utils 220 137809901897408 Erreur ligne 68: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,748 import_utils 220 137809931269824 Erreur ligne 74: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,749 import_utils 220 137809901897408 Erreur ligne 69: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,764 import_utils 220 137809931269824 Erreur ligne 75: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,766 import_utils 220 137809901897408 Erreur ligne 70: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,780 import_utils 220 137809931269824 Erreur ligne 76: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,781 import_utils 220 137809901897408 Erreur ligne 71: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,793 import_utils 220 137809931269824 Erreur ligne 77: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,794 import_utils 220 137809901897408 Erreur ligne 72: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,809 import_utils 220 137809901897408 Erreur ligne 73: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,818 import_utils 220 137809901897408 Erreur ligne 74: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,827 import_utils 220 137809901897408 Erreur ligne 75: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,834 import_utils 220 137809901897408 Erreur ligne 76: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:42:33,842 import_utils 220 137809901897408 Erreur ligne 77: Direct assignment to the reverse side of a related set is prohibited. Use services_responsable.set() instead.
+ERROR 2026-01-01 21:54:29,530 log 220 137810295117504 Internal Server Error: /admin/api/importlog/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/options.py", line 681, in get_field
+    return self.fields_map[field_name]
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^
+KeyError: 'get_taux_badge'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/admin/utils.py", line 272, in lookup_field
+    f = _get_non_gfk_field(opts, name)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/admin/utils.py", line 303, in _get_non_gfk_field
+    field = opts.get_field(name)
+            ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/options.py", line 683, in get_field
+    raise FieldDoesNotExist(
+django.core.exceptions.FieldDoesNotExist: ImportLog has no field named 'get_taux_badge'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 220, in _get_response
+    response = response.render()
+               ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/response.py", line 114, in render
+    self.content = self.rendered_content
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/response.py", line 92, in rendered_content
+    return template.render(context, self._request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/loader_tags.py", line 157, in render
+    return compiled_parent._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/loader_tags.py", line 63, in render
+    result = block.nodelist.render(context)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/admin/templatetags/base.py", line 45, in render
+    return super().render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/template/library.py", line 258, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/admin/templatetags/admin_list.py", line 336, in result_list
+    "results": list(results(cl)),
+               ^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/admin/templatetags/admin_list.py", line 312, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/admin/templatetags/admin_list.py", line 303, in __init__
+    super().__init__(*items)
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/admin/templatetags/admin_list.py", line 213, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/contrib/admin/utils.py", line 281, in lookup_field
+    value = attr(obj)
+            ^^^^^^^^^
+  File "/app/api/admin.py", line 121, in get_taux_badge
+    return format_html(
+           ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/utils/html.py", line 105, in format_html
+    return mark_safe(format_string.format(*args_safe, **kwargs_safe))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Unknown format code 'f' for object of type 'SafeString'
+ERROR 2026-01-01 21:54:29,539 basehttp 220 137810295117504 "GET /admin/api/importlog/ HTTP/1.1" 500 398824

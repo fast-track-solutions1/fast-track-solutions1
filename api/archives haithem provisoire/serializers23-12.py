@@ -145,12 +145,6 @@ class SalarieSerializer(serializers.ModelSerializer):
         many=True,
         required=False
     )
-    responsable_direct = PrimaryKeyRelatedField(
-        queryset=Salarie.objects.all(),
-        many=False,
-        required=False,
-        allow_null=True
-    )
     
     class Meta:
         model = Salarie
@@ -179,7 +173,6 @@ class SalarieSerializer(serializers.ModelSerializer):
         if departements_data is not None:
             instance.departements.set(departements_data)
         return instance
-
 
 # ============================================
 # 🎯 SERIALIZER ÉQUIPEMENT INSTANCE (À JOUR)
@@ -393,19 +386,16 @@ class SalarieListSerializer(serializers.ModelSerializer):
         model = Salarie
         fields = [
             'id', 'matricule', 'nom', 'prenom', 'genre', 'jour_mois_naissance',
-            'date_naissance', 'telephone',
+            'date_naissance',
+            'telephone',
             'service', 'service_nom', 'grade', 'grade_nom', 'poste',
             'mail_professionnel', 'telephone_professionnel', 'extension_3cx', 'photo',
             'societe',
-            'responsable_direct',  # ✅
-            'departements',        # ✅
-            'creneau_travail',
             'circuit',
             'statut', 'anciennete', 'statut_actuel', 'date_embauche',
             'en_poste',
             'date_creation', 'date_modification'
-]
-
+        ]
     
     def get_anciennete(self, obj):
         return obj.get_anciennete()
