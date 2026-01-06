@@ -635,3 +635,196 @@ class ImportLogSerializer(serializers.ModelSerializer):
         Calcule et retourne le taux de succès en %
         """
         return obj.get_taux_succes()
+# Dans serializers.py - Ajoute cette nouvelle serializer
+
+from rest_framework import serializers
+from django.contrib.auth.models import User
+from .models import Salarie, Role
+
+class UserMeSerializer(serializers.ModelSerializer):
+    """Serializer pour l'endpoint /api/me/"""
+    
+    role = serializers.SerializerMethodField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    service = serializers.SerializerMethodField()
+    department = serializers.SerializerMethodField()
+    permissions = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = User
+        fields = [
+            'id', 'first_name', 'last_name', 'email',
+            'role', 'permissions', 'service', 'department'
+        ]
+    
+    def get_role(self, obj):
+        """Détermine le rôle de l'utilisateur"""
+        # Si admin
+        if obj.is_staff:
+            return 'admin'
+        
+        # Récupère les rôles de l'utilisateur
+        roles = obj.roles.values_list('nom', flat=True) if hasattr(obj, 'roles') else []
+        
+        # Mappe vers le rôle principal
+        if 'rh' in roles:
+            return 'hr_manager'
+        if 'it' in roles:
+            return 'it_manager'
+        if 'daf' in roles or 'comptable' in roles:
+            return 'director'
+        if 'responsable_service' in roles:
+            return 'team_lead'
+        
+        # Sinon c'est un employé
+        if hasattr(obj, 'profil_salarie'):
+            return 'employee'
+        
+        return 'employee'
+    
+    def get_permissions(self, obj):
+        """Retourne les permissions de l'utilisateur"""
+        # À adapter selon ta logique de permissions
+        return []
+    
+    def get_service(self, obj):
+        """Retourne le service de l'utilisateur"""
+        try:
+            if hasattr(obj, 'profil_salarie'):
+                return obj.profil_salarie.service.id
+        except:
+            pass
+        return None
+    
+    def get_department(self, obj):
+        """Retourne le département de l'utilisateur"""
+        try:
+            if hasattr(obj, 'profil_salarie'):
+                return obj.profil_salarie.departement.id
+        except:
+            pass
+        return None
+# À la FIN de serializers.py
+
+class UserMeSerializer(serializers.ModelSerializer):
+    """Serializer pour l'endpoint /api/me/"""
+    
+    role = serializers.SerializerMethodField()
+    service = serializers.SerializerMethodField()
+    department = serializers.SerializerMethodField()
+    service_name = serializers.SerializerMethodField()
+    department_name = serializers.SerializerMethodField()
+    permissions = serializers.SerializerMethodField()
+    is_admin = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = User
+        fields = [
+            'id', 'first_name', 'last_name', 'email', 'username',
+            'role', 'is_admin', 'permissions', 
+            'service', 'service_name',
+            'department', 'department_name'
+        ]
+    
+    def get_role(self, obj):
+        """Détermine le rôle principal de l'utilisateur"""
+        # ✅ Admin en priorité
+        if obj.is_staff:
+            return 'admin'
+        
+        # ✅ Récupère les rôles via ManyToMany
+        roles_list = list(obj.roles.values_list('nom', flat=True))
+        
+        # ✅ Mappe vers rôle unique (priorité)
+        if 'rh' in roles_list:
+            return 'hr_manager'
+        if 'it' in roles_list:
+            return 'it_manager'
+        if 'daf' in roles_list:
+            return 'director'
+        if 'comptable' in roles_list:
+            return 'comptable'
+        if 'responsable_service' in roles_list:
+            return 'team_lead'
+        
+        # ✅ Vérifie si c'est un salarié
+        if hasattr(obj, 'profil_salarie') and obj.profil_salarie:
+            return 'employee'
+        
+        return 'guest'
+    
+    def get_is_admin(self, obj):
+        """Retourne True si l'utilisateur est admin"""
+        return obj.is_staff or obj.roles.filter(nom='admin').exists()
+    
+    def get_permissions(self, obj):
+        """Retourne la liste des permissions de l'utilisateur"""
+        permissions = []
+        
+        if obj.is_staff:
+            return [
+                'can_view_salaries', 'can_edit_salaries',
+                'can_validate_requests', 'can_view_financial',
+                'can_edit_financial', 'can_manage_it', 'can_manage_documents'
+            ]
+        
+        # Récupère les rôles
+        roles = obj.roles.all()
+        
+        # Construit les permissions selon les rôles
+        for role in roles:
+            if role.nom == 'rh':
+                permissions.extend(['can_view_salaries', 'can_edit_salaries', 'can_validate_requests', 'can_manage_documents'])
+            elif role.nom == 'it':
+                permissions.append('can_manage_it')
+            elif role.nom == 'daf':
+                permissions.extend(['can_view_financial', 'can_view_salaries'])
+            elif role.nom == 'comptable':
+                permissions.extend(['can_view_financial', 'can_view_salaries'])
+            elif role.nom == 'responsable_service':
+                permissions.extend(['can_validate_requests', 'can_view_salaries'])
+        
+        # Enlève les doublons
+        return list(set(permissions))
+    
+    def get_service(self, obj):
+        """Retourne l'ID du service de l'utilisateur"""
+        try:
+            if hasattr(obj, 'profil_salarie') and obj.profil_salarie:
+                return obj.profil_salarie.service.id
+        except:
+            pass
+        return None
+    
+    def get_service_name(self, obj):
+        """Retourne le nom du service"""
+        try:
+            if hasattr(obj, 'profil_salarie') and obj.profil_salarie:
+                return obj.profil_salarie.service.nom
+        except:
+            pass
+        return None
+    
+    def get_department(self, obj):
+        """Retourne le département (premier si plusieurs)"""
+        try:
+            if hasattr(obj, 'profil_salarie') and obj.profil_salarie:
+                depts = obj.profil_salarie.departements.all()
+                if depts:
+                    return depts[0].id
+        except:
+            pass
+        return None
+    
+    def get_department_name(self, obj):
+        """Retourne le nom du département"""
+        try:
+            if hasattr(obj, 'profil_salarie') and obj.profil_salarie:
+                depts = obj.profil_salarie.departements.all()
+                if depts:
+                    first_dept = depts[0]
+                    return f"{first_dept.numero} - {first_dept.nom}"
+        except:
+            pass
+        return None

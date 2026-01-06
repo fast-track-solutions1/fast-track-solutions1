@@ -1,7 +1,7 @@
 // lib/api.ts - API Client pour MSI TeamHub
 // Configuration centralisée + Services réutilisables
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/'; // ✅ Ajout du slash final
 
 // ============================================================================
 // TYPES & INTERFACES
@@ -82,8 +82,7 @@ class ApiClient {
   private token: string | null = null;
 
   constructor(baseUrl: string = API_BASE_URL) {
-    // ✅ Retire les slashes pour avoir une base propre (sans slash final)
-    this.baseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+    this.baseUrl = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`; // ✅ Force le slash final
     this.loadToken();
   }
 
@@ -128,16 +127,22 @@ class ApiClient {
   /**
    * Construit l'URL avec les paramètres de query
    */
-  private buildUrl(endpoint: string, params?: Record<string, any>): string {
-    // ✅ baseUrl est déjà sans slash final, endpoint sans slash au début
+ private buildUrl(endpoint: string, params?: Record<string, any>): string {
+    // ✅ Retire les slashes au début ET à la fin de baseUrl
+    const cleanBase = this.baseUrl.endsWith('/') 
+      ? this.baseUrl.slice(0, -1) 
+      : this.baseUrl;
+    
+    // ✅ Retire le slash au début de l'endpoint s'il existe
     const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
-    const fullUrl = `${this.baseUrl}/${cleanEndpoint}`;
-
+    
+    const fullUrl = `${cleanBase}/${cleanEndpoint}`;
+    
     const url = new URL(
-      fullUrl,
+      fullUrl, 
       typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'
     );
-
+    
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
         if (value !== null && value !== undefined && value !== '') {
@@ -149,6 +154,7 @@ class ApiClient {
     return url.toString();
   }
 
+
   /**
    * GET - Récupère les données
    */
@@ -156,7 +162,7 @@ class ApiClient {
     try {
       const url = this.buildUrl(endpoint, params);
       console.log('🔍 API GET URL:', url);
-
+      
       const response = await fetch(url, {
         method: 'GET',
         headers: this.getHeaders(),
@@ -174,12 +180,11 @@ class ApiClient {
 
       if (!response.ok) {
         const errorData: ApiError = await response.json().catch(() => ({}));
-        console.error('❌ API GET Error:', url, response.status, errorData);
+        console.error('❌ API GET Error:', url, response.status);
         throw this.createError(response.status, errorData);
       }
 
       const data = await response.json();
-      console.log('✅ API GET Success:', url, data);
       return data;
     } catch (error) {
       console.error('API GET Error:', error);
@@ -193,8 +198,6 @@ class ApiClient {
   async post<T>(endpoint: string, payload?: any): Promise<T> {
     try {
       const url = this.buildUrl(endpoint);
-      console.log('📝 API POST URL:', url, 'Payload:', payload);
-
       const response = await fetch(url, {
         method: 'POST',
         headers: this.getHeaders(),
@@ -211,12 +214,10 @@ class ApiClient {
 
       if (!response.ok) {
         const errorData: ApiError = await response.json().catch(() => ({}));
-        console.error('❌ API POST Error:', url, response.status, errorData);
         throw this.createError(response.status, errorData);
       }
 
       const data = await response.json();
-      console.log('✅ API POST Success:', url, data);
       return data;
     } catch (error) {
       console.error('API POST Error:', error);
@@ -230,8 +231,6 @@ class ApiClient {
   async put<T>(endpoint: string, payload?: any): Promise<T> {
     try {
       const url = this.buildUrl(endpoint);
-      console.log('🔄 API PUT URL:', url, 'Payload:', payload);
-
       const response = await fetch(url, {
         method: 'PUT',
         headers: this.getHeaders(),
@@ -248,12 +247,10 @@ class ApiClient {
 
       if (!response.ok) {
         const errorData: ApiError = await response.json().catch(() => ({}));
-        console.error('❌ API PUT Error:', url, response.status, errorData);
         throw this.createError(response.status, errorData);
       }
 
       const data = await response.json();
-      console.log('✅ API PUT Success:', url, data);
       return data;
     } catch (error) {
       console.error('API PUT Error:', error);
@@ -267,8 +264,6 @@ class ApiClient {
   async patch<T>(endpoint: string, payload?: any): Promise<T> {
     try {
       const url = this.buildUrl(endpoint);
-      console.log('⚙️ API PATCH URL:', url, 'Payload:', payload);
-
       const response = await fetch(url, {
         method: 'PATCH',
         headers: this.getHeaders(),
@@ -285,12 +280,10 @@ class ApiClient {
 
       if (!response.ok) {
         const errorData: ApiError = await response.json().catch(() => ({}));
-        console.error('❌ API PATCH Error:', url, response.status, errorData);
         throw this.createError(response.status, errorData);
       }
 
       const data = await response.json();
-      console.log('✅ API PATCH Success:', url, data);
       return data;
     } catch (error) {
       console.error('API PATCH Error:', error);
@@ -304,8 +297,6 @@ class ApiClient {
   async delete<T>(endpoint: string): Promise<T> {
     try {
       const url = this.buildUrl(endpoint);
-      console.log('🗑️ API DELETE URL:', url);
-
       const response = await fetch(url, {
         method: 'DELETE',
         headers: this.getHeaders(),
@@ -321,17 +312,14 @@ class ApiClient {
 
       if (!response.ok && response.status !== 204) {
         const errorData: ApiError = await response.json().catch(() => ({}));
-        console.error('❌ API DELETE Error:', url, response.status, errorData);
         throw this.createError(response.status, errorData);
       }
 
       if (response.status === 204) {
-        console.log('✅ API DELETE Success (204):', url);
         return {} as T;
       }
 
       const data = await response.json();
-      console.log('✅ API DELETE Success:', url, data);
       return data;
     } catch (error) {
       console.error('API DELETE Error:', error);

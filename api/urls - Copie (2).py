@@ -100,7 +100,6 @@ urlpatterns = [
     # Routes du router (inclut toutes les routes enregistrées)
     path('', include(router.urls)),
     
-    # ✅ ROUTE POUR L'UTILISATEUR CONNECTÉ - SANS PRÉFIXE 'api/'
-    # Car msi_backend/urls.py inclut déjà path('api/', include('api.urls'))
+    # ✅ ROUTE POUR L'UTILISATEUR CONNECTÉ
     path('me/', user_me, name='user-me'),
 ]

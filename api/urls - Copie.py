@@ -1,5 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from django.urls import path
 from .views import user_me
 
 # ============================================================================
@@ -99,8 +100,5 @@ router.register(r'import', ImportViewSet, basename='import')
 urlpatterns = [
     # Routes du router (inclut toutes les routes enregistrées)
     path('', include(router.urls)),
-    
-    # ✅ ROUTE POUR L'UTILISATEUR CONNECTÉ - SANS PRÉFIXE 'api/'
-    # Car msi_backend/urls.py inclut déjà path('api/', include('api.urls'))
-    path('me/', user_me, name='user-me'),
+    path('api/me/', user_me, name='user-me'),
 ]

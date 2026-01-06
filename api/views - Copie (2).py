@@ -1,13 +1,12 @@
 # ============================================================================
-# VIEWS.PY - AVEC SYSTÈME D'AUTORISATION COMPLET - CORRIGÉ
+# VIEWS.PY - AVEC SYSTÈME D'AUTORISATION COMPLET
 # ============================================================================
 # CHANGEMENTS CLÉS:
-# ✅ SocieteViewSet: Tous peuvent LIRE (ligne 129-140 modifiée)
-# ✅ ServiceViewSet: Simplifié à [IsAuthenticated()] (ligne 160-165)
-# ✅ GradeViewSet: Simplifié à [IsAuthenticated()] (ligne 179-184)
-# ✅ RESTE: Inchangé
+# ✅ NEW Imports: CanViewAllSalaries, CanEditAllSalaries, etc.
+# ✅ get_permissions() ajouté à CHAQUE ViewSet
+# ✅ get_queryset() avec filtrage selon les permissions
+# ✅ Actions custom avec permissions granulaires
 # ============================================================================
-
 
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view, permission_classes
@@ -31,7 +30,6 @@ from rest_framework import status
 from .serializers import UserMeSerializer
 
 
-
 from .models import (
     Societe, Service, Grade, Departement, TypeAcces, OutilTravail, Circuit,
     Equipement, Salarie, AccesSalarie, HistoriqueSalarie, FichePoste,
@@ -40,7 +38,6 @@ from .models import (
     TypeApplicationAcces, AccesApplication, FicheParametresUser, Role,
     DemandeAcompte, DemandeSortie, ImportLog
 )
-
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -59,7 +56,6 @@ def user_me(request):
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
-
 # ✅ SERIALIZERS - UNE SEULE FOIS AU DÉBUT
 from .serializers import (
     SocieteSerializer, ServiceSerializer, GradeSerializer, DepartementSerializer,
@@ -72,7 +68,6 @@ from .serializers import (
     DemandeAcompteSerializer, DemandeSortieSerializer, TravauxExceptionnelsSerializer,
     FichePosteDetailSerializer, AmeliorationProposeeSerializer, ImportLogSerializer
 )
-
 
 # ✅ IMPORT NEW PERMISSIONS - NOUVELLE VERSION
 from .permissions import (
@@ -110,21 +105,18 @@ from .permissions import (
     CanManageAttendance,
 )
 
-
 from .utils import (
     IMPORT_CONFIG, parse_value, get_current_data,
     generate_template_dataframe
 )
 
 
-
 # ============================================================================
 # VIEWSETS BASE - PARAMÉTRAGE
 # ============================================================================
 
-
 class SocieteViewSet(viewsets.ModelViewSet):
-    """ViewSet pour Societes - Lecture pour tous, Modif pour Admin"""
+    """ViewSet pour Societes - Admin seulement"""
     queryset = Societe.objects.all()
     serializer_class = SocieteSerializer
     filterset_fields = ['nom', 'actif']
@@ -132,13 +124,9 @@ class SocieteViewSet(viewsets.ModelViewSet):
     ordering_fields = ['nom', 'date_creation']
     ordering = ['nom']
 
-
     def get_permissions(self):
-        """Tous les users authentifiés peuvent lire"""
-        if self.action in ['list', 'retrieve']:
-            return [IsAuthenticated()]  # ✅ CHANGEMENT: Tous les users
-        return [IsAuthenticated(), IsAdmin()]  # Admin pour modifications
-
+        """Admin seulement"""
+        return [IsAuthenticated(), IsAdmin()]
 
 
 class DepartementViewSet(viewsets.ModelViewSet):
@@ -150,11 +138,9 @@ class DepartementViewSet(viewsets.ModelViewSet):
     ordering_fields = ['numero', 'nom']
     ordering = ['numero']
 
-
     def get_permissions(self):
         """Tous les utilisateurs authentifiés peuvent voir"""
         return [IsAuthenticated()]
-
 
 
 class CircuitViewSet(viewsets.ModelViewSet):
@@ -165,11 +151,9 @@ class CircuitViewSet(viewsets.ModelViewSet):
     search_fields = ['nom', 'description']
     ordering_fields = ['nom']
 
-
     def get_permissions(self):
         """Tous les utilisateurs authentifiés peuvent voir"""
         return [IsAuthenticated()]
-
 
 
 class ServiceViewSet(viewsets.ModelViewSet):
@@ -180,11 +164,11 @@ class ServiceViewSet(viewsets.ModelViewSet):
     search_fields = ['nom', 'description']
     ordering_fields = ['nom']
 
-
     def get_permissions(self):
-        """Tous les utilisateurs authentifiés"""
-        return [IsAuthenticated()]  # ✅ CHANGEMENT: Simplifié
-
+        """Permissions selon action"""
+        if self.action in ['list', 'retrieve']:
+            return [IsAuthenticated(), CanViewAllSalaries()]
+        return [IsAuthenticated(), CanViewAllSalaries()]
 
 
 class GradeViewSet(viewsets.ModelViewSet):
@@ -195,11 +179,11 @@ class GradeViewSet(viewsets.ModelViewSet):
     search_fields = ['nom']
     ordering_fields = ['ordre', 'nom']
 
-
     def get_permissions(self):
-        """Tous les utilisateurs authentifiés"""
-        return [IsAuthenticated()]  # ✅ CHANGEMENT: Simplifié
-
+        """Permissions selon action"""
+        if self.action in ['list', 'retrieve']:
+            return [IsAuthenticated(), CanViewAllSalaries()]
+        return [IsAuthenticated(), CanViewAllSalaries()]
 
 
 class TypeAccesViewSet(viewsets.ModelViewSet):
@@ -209,11 +193,9 @@ class TypeAccesViewSet(viewsets.ModelViewSet):
     filterset_fields = ['actif']
     search_fields = ['nom']
 
-
     def get_permissions(self):
         """Tous les utilisateurs authentifiés"""
         return [IsAuthenticated()]
-
 
 
 class OutilTravailViewSet(viewsets.ModelViewSet):
@@ -223,11 +205,9 @@ class OutilTravailViewSet(viewsets.ModelViewSet):
     filterset_fields = ['actif']
     search_fields = ['nom', 'description']
 
-
     def get_permissions(self):
         """Tous les utilisateurs authentifiés"""
         return [IsAuthenticated()]
-
 
 
 class CreneauTravailViewSet(viewsets.ModelViewSet):
@@ -237,17 +217,14 @@ class CreneauTravailViewSet(viewsets.ModelViewSet):
     filterset_fields = ['societe', 'actif']
     search_fields = ['nom']
 
-
     def get_permissions(self):
         """Tous les utilisateurs authentifiés"""
         return [IsAuthenticated()]
 
 
-
 # ============================================================================
 # VIEWSET EQUIPEMENT
 # ============================================================================
-
 
 class EquipementViewSet(viewsets.ModelViewSet):
     """ViewSet pour Équipements"""
@@ -257,13 +234,11 @@ class EquipementViewSet(viewsets.ModelViewSet):
     search_fields = ['nom', 'description']
     ordering_fields = ['nom', 'type_equipement']
 
-
     def get_permissions(self):
         """Permissions selon action"""
         if self.action in ['list', 'retrieve']:
             return [IsAuthenticated(), CanViewAllEquipment()]
         return [IsAuthenticated(), CanViewAllEquipment()]
-
 
     def get_queryset(self):
         """Filtre selon permissions"""
@@ -271,7 +246,6 @@ class EquipementViewSet(viewsets.ModelViewSet):
         if user.is_staff or user.has_perm('api.view_all_equipment'):
             return Equipement.objects.all()
         return Equipement.objects.none()
-
 
     @action(detail=False, methods=['get'])
     def statistics(self, request):
@@ -301,7 +275,6 @@ class EquipementViewSet(viewsets.ModelViewSet):
         })
 
 
-
 class TypeApplicationAccesViewSet(viewsets.ModelViewSet):
     """ViewSet pour Types d'applications"""
     queryset = TypeApplicationAcces.objects.all()
@@ -309,17 +282,14 @@ class TypeApplicationAccesViewSet(viewsets.ModelViewSet):
     filterset_fields = ['actif']
     search_fields = ['nom']
 
-
     def get_permissions(self):
         """Tous les utilisateurs authentifiés"""
         return [IsAuthenticated()]
 
 
-
 # ============================================================================
 # VIEWSETS SALARIÉ
 # ============================================================================
-
 
 class SalarieViewSet(viewsets.ModelViewSet):
     """ViewSet pour Salariés - Avec permissions granulaires"""
@@ -328,7 +298,6 @@ class SalarieViewSet(viewsets.ModelViewSet):
     search_fields = ['nom', 'prenom', 'matricule', 'mail_professionnel']
     ordering_fields = ['nom', 'prenom', 'date_embauche', 'date_creation']
     ordering = ['nom', 'prenom']
-
 
     def get_permissions(self):
         """Permissions selon action"""
@@ -339,7 +308,6 @@ class SalarieViewSet(viewsets.ModelViewSet):
         elif self.action == 'ma_fiche':
             return [IsAuthenticated(), CanViewOwnSalary()]
         return [IsAuthenticated()]
-
 
     def get_queryset(self):
         """Filtre les salariés selon le rôle de l'utilisateur"""
@@ -366,13 +334,11 @@ class SalarieViewSet(viewsets.ModelViewSet):
         
         return Salarie.objects.none()
 
-
     def get_serializer_class(self):
         """Retourne serializer selon action"""
         if self.action in ['list', 'retrieve']:
             return SalarieDetailSerializer
         return SalarieListSerializer
-
 
     @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def ma_fiche(self, request):
@@ -383,7 +349,6 @@ class SalarieViewSet(viewsets.ModelViewSet):
         serializer = SalarieDetailSerializer(request.user.profil_salarie)
         return Response(serializer.data)
 
-
     @action(detail=True, methods=['get'])
     def equipements(self, request, pk=None):
         """Liste équipements du salarié"""
@@ -392,7 +357,6 @@ class SalarieViewSet(viewsets.ModelViewSet):
         serializer = EquipementInstanceSerializer(equipements, many=True)
         return Response(serializer.data)
 
-
     @action(detail=True, methods=['get'])
     def acces_applicatif(self, request, pk=None):
         """Liste accès applicatif"""
@@ -400,7 +364,6 @@ class SalarieViewSet(viewsets.ModelViewSet):
         acces = AccesApplication.objects.filter(salarie=salarie)
         serializer = AccesApplicationSerializer(acces, many=True)
         return Response(serializer.data)
-
 
     @action(detail=True, methods=['get'])
     def statut_actuel(self, request, pk=None):
@@ -412,14 +375,12 @@ class SalarieViewSet(viewsets.ModelViewSet):
             'jour_mois_naissance': salarie.jour_mois_naissance
         })
 
-
     @action(detail=False, methods=['get'])
     def annuaire(self, request):
         """Liste complète pour annuaire (infos publiques)"""
         salaries = self.get_queryset().filter(statut='actif')
         serializer = SalarieListSerializer(salaries, many=True)
         return Response(serializer.data)
-
 
 
 class EquipementInstanceViewSet(viewsets.ModelViewSet):
@@ -430,7 +391,6 @@ class EquipementInstanceViewSet(viewsets.ModelViewSet):
     search_fields = ['numero_serie', 'model']
     ordering_fields = ['date_affectation', 'numero_serie']
 
-
     def get_permissions(self):
         """Permissions selon action"""
         if self.action in ['list', 'retrieve']:
@@ -440,7 +400,6 @@ class EquipementInstanceViewSet(viewsets.ModelViewSet):
         elif self.action in ['destroy']:
             return [IsAuthenticated(), CanValidateEquipmentRequests()]
         return [IsAuthenticated()]
-
 
     def get_queryset(self):
         """Filtre selon permissions"""
@@ -456,7 +415,6 @@ class EquipementInstanceViewSet(viewsets.ModelViewSet):
         return EquipementInstance.objects.none()
 
 
-
 class AccesApplicationViewSet(viewsets.ModelViewSet):
     """ViewSet pour accès applicatifs"""
     queryset = AccesApplication.objects.all()
@@ -464,11 +422,9 @@ class AccesApplicationViewSet(viewsets.ModelViewSet):
     filterset_fields = ['salarie', 'application']
     search_fields = ['application']
 
-
     def get_permissions(self):
         """Permissions selon action"""
         return [IsAuthenticated()]
-
 
 
 class AccesSalarieViewSet(viewsets.ModelViewSet):
@@ -477,11 +433,9 @@ class AccesSalarieViewSet(viewsets.ModelViewSet):
     serializer_class = AccesSalarieSerializer
     filterset_fields = ['salarie', 'type_acces']
 
-
     def get_permissions(self):
         """Permissions selon action"""
         return [IsAuthenticated()]
-
 
 
 class HoraireSalarieViewSet(viewsets.ModelViewSet):
@@ -490,11 +444,9 @@ class HoraireSalarieViewSet(viewsets.ModelViewSet):
     serializer_class = HoraireSalarieSerializer
     filterset_fields = ['salarie', 'date_debut']
 
-
     def get_permissions(self):
         """Permissions selon action"""
         return [IsAuthenticated()]
-
 
 
 class HistoriqueSalarieViewSet(viewsets.ModelViewSet):
@@ -505,11 +457,9 @@ class HistoriqueSalarieViewSet(viewsets.ModelViewSet):
     ordering_fields = ['date_changement']
     ordering = ['-date_changement']
 
-
     def get_permissions(self):
         """Admin et RH seulement"""
         return [IsAuthenticated(), CanViewAllSalaries()]
-
 
     def get_queryset(self):
         """Filtre selon permissions"""
@@ -519,11 +469,9 @@ class HistoriqueSalarieViewSet(viewsets.ModelViewSet):
         return HistoriqueSalarie.objects.none()
 
 
-
 # ============================================================================
 # VIEWSETS DEMANDES (CONGÉS, ACOMPTES, SORTIES)
 # ============================================================================
-
 
 class DemandeCongeViewSet(viewsets.ModelViewSet):
     """ViewSet pour demandes de congé - Avec validations multi-niveaux"""
@@ -532,7 +480,6 @@ class DemandeCongeViewSet(viewsets.ModelViewSet):
     filterset_fields = ['salarie', 'statut', 'type_conge']
     ordering_fields = ['date_debut', 'date_creation']
     ordering = ['-date_creation']
-
 
     def get_permissions(self):
         """Permissions selon action"""
@@ -545,7 +492,6 @@ class DemandeCongeViewSet(viewsets.ModelViewSet):
         elif self.action in ['valider_service', 'rejeter']:
             return [IsAuthenticated(), CanValidateLeaveRequestsService()]
         return [IsAuthenticated()]
-
 
     def get_queryset(self):
         """Filtre selon rôle"""
@@ -566,7 +512,6 @@ class DemandeCongeViewSet(viewsets.ModelViewSet):
         
         return DemandeConge.objects.none()
 
-
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def valider_direct(self, request, pk=None):
         """Valider par responsable direct"""
@@ -583,7 +528,6 @@ class DemandeCongeViewSet(viewsets.ModelViewSet):
         demande.save()
         return Response({'status': 'Validée par responsable direct'},
                        status=status.HTTP_200_OK)
-
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def valider_service(self, request, pk=None):
@@ -607,7 +551,6 @@ class DemandeCongeViewSet(viewsets.ModelViewSet):
         return Response({'status': 'Approuvée par responsable service'},
                        status=status.HTTP_200_OK)
 
-
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def rejeter(self, request, pk=None):
         """Rejeter la demande"""
@@ -627,18 +570,15 @@ class DemandeCongeViewSet(viewsets.ModelViewSet):
                        status=status.HTTP_200_OK)
 
 
-
 class SoldeCongeViewSet(viewsets.ReadOnlyModelViewSet):
     """ViewSet lecture-seule pour solde congés"""
     queryset = SoldeConge.objects.all()
     serializer_class = SoldeCongeSerializer
     filterset_fields = ['salarie']
 
-
     def get_permissions(self):
         """Permissions selon action"""
         return [IsAuthenticated(), CanViewOwnLeaveRequests()]
-
 
     def get_queryset(self):
         """Filtre selon permissions"""
@@ -653,7 +593,6 @@ class SoldeCongeViewSet(viewsets.ReadOnlyModelViewSet):
         return SoldeConge.objects.none()
 
 
-
 class DemandeAcompteViewSet(viewsets.ModelViewSet):
     """ViewSet pour demandes d'acompte"""
     queryset = DemandeAcompte.objects.all()
@@ -661,7 +600,6 @@ class DemandeAcompteViewSet(viewsets.ModelViewSet):
     filterset_fields = ['salarie', 'statut']
     ordering_fields = ['date_demande']
     ordering = ['-date_demande']
-
 
     def get_permissions(self):
         """Permissions selon action"""
@@ -673,7 +611,6 @@ class DemandeAcompteViewSet(viewsets.ModelViewSet):
             return [IsAuthenticated(), CanValidateLeaveRequestsDirect()]
         return [IsAuthenticated()]
 
-
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def valider_direct(self, request, pk=None):
         """Valider par responsable direct"""
@@ -683,7 +620,6 @@ class DemandeAcompteViewSet(viewsets.ModelViewSet):
         demande.statut = 'validée_direct'
         demande.save()
         return Response({'status': 'Validée par responsable direct'})
-
 
     @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
     def valider_service(self, request, pk=None):
@@ -696,7 +632,6 @@ class DemandeAcompteViewSet(viewsets.ModelViewSet):
         return Response({'status': 'Approuvée par responsable service'})
 
 
-
 class DemandeSortieViewSet(viewsets.ModelViewSet):
     """ViewSet pour demandes de sortie"""
     queryset = DemandeSortie.objects.all()
@@ -705,11 +640,9 @@ class DemandeSortieViewSet(viewsets.ModelViewSet):
     ordering_fields = ['date_sortie']
     ordering = ['-date_sortie']
 
-
     def get_permissions(self):
         """Permissions selon action"""
         return [IsAuthenticated()]
-
 
 
 class TravauxExceptionnelsViewSet(viewsets.ModelViewSet):
@@ -720,17 +653,14 @@ class TravauxExceptionnelsViewSet(viewsets.ModelViewSet):
     ordering_fields = ['date_travail']
     ordering = ['-date_travail']
 
-
     def get_permissions(self):
         """Permissions selon action"""
         return [IsAuthenticated()]
 
 
-
 # ============================================================================
 # VIEWSETS DOCUMENTS
 # ============================================================================
-
 
 class DocumentSalarieViewSet(viewsets.ModelViewSet):
     """ViewSet pour documents - Avec permissions de visibilité"""
@@ -739,7 +669,6 @@ class DocumentSalarieViewSet(viewsets.ModelViewSet):
     filterset_fields = ['salarie', 'type_document']
     ordering_fields = ['date_upload']
     ordering = ['-date_upload']
-
 
     def get_permissions(self):
         """Permissions selon action"""
@@ -750,7 +679,6 @@ class DocumentSalarieViewSet(viewsets.ModelViewSet):
         elif self.action == 'destroy':
             return [IsAuthenticated(), CanManageDocuments()]
         return [IsAuthenticated()]
-
 
     def get_queryset(self):
         """Filtre selon permissions"""
@@ -772,11 +700,9 @@ class DocumentSalarieViewSet(viewsets.ModelViewSet):
         return DocumentSalarie.objects.none()
 
 
-
 # ============================================================================
 # VIEWSETS FICHES DE POSTE
 # ============================================================================
-
 
 class FichePosteViewSet(viewsets.ModelViewSet):
     """ViewSet pour fiches de poste"""
@@ -786,13 +712,11 @@ class FichePosteViewSet(viewsets.ModelViewSet):
     search_fields = ['titre', 'description']
     ordering_fields = ['titre', 'service']
 
-
     def get_permissions(self):
         """Permissions selon action"""
         if self.action in ['list', 'retrieve']:
             return [IsAuthenticated()]
         return [IsAuthenticated(), CanManageJobEvolution()]
-
 
     def get_queryset(self):
         """Filtre selon permissions"""
@@ -800,7 +724,6 @@ class FichePosteViewSet(viewsets.ModelViewSet):
         
         # Tous les utilisateurs authentifiés peuvent voir
         return FichePoste.objects.all()
-
 
 
 class AmeliorationProposeeViewSet(viewsets.ModelViewSet):
@@ -811,7 +734,6 @@ class AmeliorationProposeeViewSet(viewsets.ModelViewSet):
     ordering_fields = ['date_proposition', 'priorite']
     ordering = ['-priorite', '-date_proposition']
 
-
     def get_permissions(self):
         """Permissions selon action"""
         if self.action in ['list', 'retrieve']:
@@ -821,7 +743,6 @@ class AmeliorationProposeeViewSet(viewsets.ModelViewSet):
         elif self.action in ['update', 'partial_update', 'destroy']:
             return [IsAuthenticated(), CanManageJobEvolution()]
         return [IsAuthenticated()]
-
 
     def get_queryset(self):
         """Filtre selon permissions"""
@@ -842,22 +763,18 @@ class AmeliorationProposeeViewSet(viewsets.ModelViewSet):
         return AmeliorationProposee.objects.none()
 
 
-
 # ============================================================================
 # VIEWSETS PARAMÉTRAGE
 # ============================================================================
-
 
 class FicheParametresUserViewSet(viewsets.ModelViewSet):
     """ViewSet pour paramètres utilisateur"""
     queryset = FicheParametresUser.objects.all()
     serializer_class = FicheParametresUserSerializer
 
-
     def get_permissions(self):
         """Admin seulement"""
         return [IsAuthenticated(), IsAdmin()]
-
 
 
 class RoleViewSet(viewsets.ReadOnlyModelViewSet):
@@ -865,17 +782,14 @@ class RoleViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Role.objects.all()
     serializer_class = RoleSerializer
 
-
     def get_permissions(self):
         """Admin seulement"""
         return [IsAuthenticated(), IsAdmin()]
 
 
-
 # ============================================================================
 # VIEWSET IMPORTLOG
 # ============================================================================
-
 
 class ImportLogViewSet(viewsets.ReadOnlyModelViewSet):
     """ViewSet pour logs d'import - Lecture seule"""
@@ -885,11 +799,9 @@ class ImportLogViewSet(viewsets.ReadOnlyModelViewSet):
     ordering_fields = ['date_creation']
     ordering = ['-date_creation']
 
-
     def get_permissions(self):
         """Admin seulement"""
         return [IsAuthenticated(), IsAdmin()]
-
 
     def get_queryset(self):
         """Admin seulement"""

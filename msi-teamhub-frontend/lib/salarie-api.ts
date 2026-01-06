@@ -1,4 +1,4 @@
-// @/lib/salarie-api.ts - Client API complet et fonctionnel pour les Salariés
+// @/lib/salarie-api.ts - Client API complet avec LOGS et CORRECTIONS
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -32,7 +32,6 @@ export interface Salarie {
   en_poste?: boolean;
   date_creation: string;
   date_modification: string;
-  // Champs affichage
   service_nom?: string;
   grade_nom?: string;
   societe_nom?: string;
@@ -61,18 +60,12 @@ class SalarieApi {
     this.loadToken();
   }
 
-  /**
-   * Charge le token depuis localStorage
-   */
   private loadToken() {
     if (typeof window !== 'undefined') {
       this.token = localStorage.getItem('access_token');
     }
   }
 
-  /**
-   * Construit les headers avec le token
-   */
   private getHeaders(): HeadersInit {
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -87,24 +80,53 @@ class SalarieApi {
   }
 
   /**
-   * Gère les erreurs API
+   * Gère les erreurs API - VERSION AVEC LOGS COMPLETS
    */
   private async handleError(response: Response) {
     let errorData: any = {};
+    let responseText = '';
+    
+    console.log('═══════════════════════════════════════');
+    console.log('🔴 ERREUR API DÉTECTÉE');
+    console.log('═══════════════════════════════════════');
+    console.log('📊 Status:', response.status);
+    console.log('📊 StatusText:', response.statusText);
     
     try {
-      errorData = await response.json();
+      responseText = await response.text();
+      
+      console.log('📋 RESPONSE TEXT BRUT:');
+      console.log(responseText);
+      console.log('📋 RESPONSE TEXT LENGTH:', responseText.length);
+      
+      if (responseText && responseText.length > 0) {
+        try {
+          errorData = JSON.parse(responseText);
+          console.log('✅ JSON PARSÉ:');
+          console.log(JSON.stringify(errorData, null, 2));
+        } catch (e) {
+          console.log('❌ PAS DU JSON VALIDE');
+          errorData = { raw: responseText };
+        }
+      } else {
+        console.log('⚠️ RESPONSE TEXT EST VIDE!');
+      }
     } catch (e) {
-      // Si on ne peut pas parser JSON, utiliser le statusText
+      console.error('❌ Erreur lors de la lecture de la réponse:', e);
     }
 
-    const message = errorData?.detail || errorData?.error || `Erreur ${response.status}`;
-    console.error('🔴 Erreur API:', {
+    const message = errorData?.detail || errorData?.error || errorData?.raw || `Erreur ${response.status}`;
+    
+    console.log('═══════════════════════════════════════');
+    console.log('🔴 ERREUR API COMPLÈTE:');
+    console.log({
       status: response.status,
       statusText: response.statusText,
       message,
-      detail: errorData,
+      responseText,
+      errorData,
     });
+    console.log('═══════════════════════════════════════');
 
     const error = new Error(message);
     (error as any).status = response.status;
@@ -112,47 +134,35 @@ class SalarieApi {
     throw error;
   }
 
-/**
- * GET /api/salaries/ - Récupère tous les salariés (toutes les pages)
- */
-async getSalaries(): Promise<Salarie[]> {
-  try {
-    let allSalaries: Salarie[] = [];
-    let url: string | null = `${this.baseUrl}/`;
-    
-    // Charger toutes les pages
-    while (url) {
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: this.getHeaders(),
-        credentials: 'include',
-      });
+  async getSalaries(): Promise<Salarie[]> {
+    try {
+      let allSalaries: Salarie[] = [];
+      let url: string | null = `${this.baseUrl}/`;
       
-      if (!response.ok) {
-        await this.handleError(response);
+      while (url) {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: this.getHeaders(),
+          credentials: 'include',
+        });
+        
+        if (!response.ok) {
+          await this.handleError(response);
+        }
+        
+        const data: ApiResponse<Salarie> = await response.json();
+        allSalaries = [...allSalaries, ...(data.results || [])];
+        url = data.next || null;
       }
       
-      const data: ApiResponse<Salarie> = await response.json();
-      
-      // Ajouter les résultats de cette page
-      allSalaries = [...allSalaries, ...(data.results || [])];
-      
-      // Passer à la page suivante (null si dernière page)
-      url = data.next || null;
+      console.log(`✅ ${allSalaries.length} salariés chargés au total`);
+      return allSalaries;
+    } catch (error) {
+      console.error('❌ Erreur getSalaries:', error);
+      throw error;
     }
-    
-    console.log(`✅ ${allSalaries.length} salariés chargés au total`);
-    return allSalaries;
-  } catch (error) {
-    console.error('❌ Erreur getSalaries:', error);
-    throw error;
   }
-}
 
-
-  /**
-   * GET /api/salaries/{id}/ - Récupère un salarié
-   */
   async getSalarieById(id: number): Promise<Salarie> {
     try {
       const response = await fetch(`${this.baseUrl}/${id}/`, {
@@ -172,9 +182,6 @@ async getSalaries(): Promise<Salarie[]> {
     }
   }
 
-  /**
-   * POST /api/salaries/ - Crée un nouveau salarié
-   */
   async createSalarie(
     data: Omit<Salarie, 'id' | 'date_creation' | 'date_modification'>
   ): Promise<Salarie> {
@@ -202,81 +209,87 @@ async getSalaries(): Promise<Salarie[]> {
   }
 
   /**
-   * PUT /api/salaries/{id}/ - Met à jour un salarié
+   * PUT /api/salaries/{id}/ - VERSION AVEC LOGS + CORRECTIONS
    */
   async updateSalarie(id: number, data: Partial<Salarie>): Promise<Salarie> {
-  try {
-    console.log(`📝 Mise à jour salarié ${id}:`, data);
+    try {
+      console.log(`📝 Mise à jour salarié ${id}:`, data);
 
-    // 1️⃣ Récupérer le salarié actuel
-    const current = await this.getSalarieById(id);
-    console.log('📋 Salarié actuel:', current);
+      const current = await this.getSalarieById(id);
+      console.log('📋 Salarié actuel:', current);
 
-    // 2️⃣ Fusionner les données
-    const mergedData = {
-      ...current,
-      ...data,
-    };
+      const mergedData = {
+        ...current,
+        ...data,
+      };
 
-    // 3️⃣ Créer un objet propre avec SEULEMENT les champs attendus
-    const cleanData = {
-      nom: mergedData.nom,
-      prenom: mergedData.prenom,
-      matricule: mergedData.matricule,
-      genre: mergedData.genre,
-      date_naissance: mergedData.date_naissance,
-      telephone: mergedData.telephone,
-      mail_professionnel: mergedData.mail_professionnel,
-      telephone_professionnel: mergedData.telephone_professionnel,
-      extension_3cx: mergedData.extension_3cx,
-      photo: mergedData.photo,
-      societe: mergedData.societe,
-      service: mergedData.service,
-      grade: mergedData.grade,
-      responsable_direct: mergedData.responsable_direct,
-      poste: mergedData.poste,
-      departements: mergedData.departements,
-      circuit: mergedData.circuit,
-      date_embauche: mergedData.date_embauche,
-      statut: mergedData.statut,
-      date_sortie: mergedData.date_sortie,
-      creneau_travail: mergedData.creneau_travail,
-      en_poste: mergedData.en_poste,
-    };
+      // Construction de cleanData AVEC les corrections
+      const cleanData = {
+        nom: mergedData.nom,
+        prenom: mergedData.prenom,
+        matricule: mergedData.matricule,
 
-    console.log('🔍 responsable_direct dans cleanData:', cleanData.responsable_direct);
-    console.log('🔍 departements dans cleanData:', cleanData.departements);
-    console.log('📤 Données NETTOYÉES (JSON):', JSON.stringify(cleanData, null, 2));
+        // 1️⃣ Normaliser le genre (M/F → m/f) pour matcher les choices Django
+        genre: mergedData.genre
+          ? mergedData.genre.toLowerCase()
+          : 'm',
 
-    // 4️⃣ Envoyer
-    const response = await fetch(`${this.baseUrl}/${id}/`, {
-      method: 'PUT',
-      headers: this.getHeaders(),
-      credentials: 'include',
-      body: JSON.stringify(cleanData),
-    });
+        // 2️⃣ Ne pas envoyer "" comme date (Django n'aime pas)
+        date_naissance: mergedData.date_naissance
+          ? mergedData.date_naissance
+          : null,
 
-    if (!response.ok) {
-      await this.handleError(response);
+        telephone: mergedData.telephone,
+        mail_professionnel: mergedData.mail_professionnel,
+        telephone_professionnel: mergedData.telephone_professionnel,
+        extension_3cx: mergedData.extension_3cx,
+        photo: mergedData.photo,
+        societe: mergedData.societe,
+        service: mergedData.service,
+        grade: mergedData.grade,
+        responsable_direct: mergedData.responsable_direct,
+        poste: mergedData.poste,
+        departements: mergedData.departements || [],
+        circuit: mergedData.circuit,
+        date_embauche: mergedData.date_embauche,
+
+        // 3️⃣ Mapper le statut du front vers les choices Django
+        statut:
+          mergedData.statut === 'OK'
+            ? 'actif'
+            : mergedData.statut ?? 'actif',
+
+        date_sortie: mergedData.date_sortie || null,
+        creneau_travail: mergedData.creneau_travail,
+        en_poste: mergedData.en_poste ?? false,
+      };
+
+      console.log('═══════════════════════════════════════');
+      console.log('📤 DONNÉES À ENVOYER:');
+      console.log(JSON.stringify(cleanData, null, 2));
+      console.log('═══════════════════════════════════════');
+
+      const response = await fetch(`${this.baseUrl}/${id}/`, {
+        method: 'PUT',
+        headers: this.getHeaders(),
+        credentials: 'include',
+        body: JSON.stringify(cleanData),
+      });
+
+      if (!response.ok) {
+        await this.handleError(response);
+      }
+
+      const updated = await response.json();
+      console.log('✅ Salarié mis à jour:', JSON.stringify(updated, null, 2));
+      return updated;
+
+    } catch (error) {
+      console.error(`❌ Erreur updateSalarie(${id}):`, error);
+      throw error;
     }
-
-    const updated = await response.json();
-console.log('✅ Salarié mis à jour (JSON):', JSON.stringify(updated, null, 2));
-console.log('🔍 responsable_direct retourné:', updated.responsable_direct);
-console.log('🔍 departements retournés:', updated.departements);
-return updated;
-
-
-  } catch (error) {
-    console.error(`❌ Erreur updateSalarie(${id}):`, error);
-    throw error;
   }
-}
 
-
-  /**
-   * DELETE /api/salaries/{id}/ - Supprime un salarié
-   */
   async deleteSalarie(id: number): Promise<void> {
     try {
       const response = await fetch(`${this.baseUrl}/${id}/`, {
