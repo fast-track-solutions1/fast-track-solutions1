@@ -6,7 +6,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import 'leaflet-defaulticon-compatibility';
-import { Loader2, Package2, Users } from 'lucide-react';
+import { Loader2, Package2, Users, ChevronDown, ChevronUp } from 'lucide-react';
 
 // ✅ IMPORTS DES CLASSES API
 import { salarieApi, Salarie } from '@/lib/salarie-api';
@@ -112,7 +112,7 @@ function InteractiveMap({ isDark, departments, salaries, services, grades, onDep
     };
   }, [departments, salaries, onDepartmentClick]);
 
-  return <div ref={mapContainer} className="w-full h-full rounded-lg shadow-lg border border-slate-300 dark:border-slate-600" />;
+  return <div ref={mapContainer} className="w-full h-96 rounded-lg shadow-lg border border-slate-300 dark:border-slate-600" />;
 }
 
 
@@ -236,162 +236,6 @@ function DepartmentDetailTable({ department, salaries, services, grades, isDark 
               })}
             </div>
           ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
-// ============================================================================
-// STATS ÉQUIPEMENTS
-// ============================================================================
-
-interface EquipmentStatsProps {
-  equipment: Equipment[];
-  instances: EquipmentInstance[];
-  salaries: Salarie[];
-  isDark: boolean;
-}
-
-function EquipmentStats({ equipment, instances, salaries, isDark }: EquipmentStatsProps) {
-  const totalStock = equipment.reduce((sum, e) => sum + (e.stock_total || 0), 0);
-  const totalDisponible = equipment.reduce((sum, e) => sum + (e.stock_disponible || 0), 0);
-  const totalUtilise = equipment.reduce((sum, e) => sum + ((e.stock_total || 0) - (e.stock_disponible || 0)), 0);
-
-  const instancesAttribuees = instances.filter(i => i.salarie).length;
-  const instancesNonAttribuees = instances.length - instancesAttribuees;
-
-  const equipmentStats = equipment.map(eq => {
-    const eqInstances = instances.filter(i => i.equipement === eq.id);
-    const attribuees = eqInstances.filter(i => i.salarie).length;
-    return {
-      nom: eq.nom,
-      stock_total: eq.stock_total,
-      stock_disponible: eq.stock_disponible,
-      attribuees: attribuees,
-      non_attribuees: eqInstances.length - attribuees,
-    };
-  });
-
-  return (
-    <div className={`rounded-xl border backdrop-blur-xl overflow-hidden ${
-      isDark ? 'bg-slate-900/40 border-slate-700/50' : 'bg-white/40 border-white/60 shadow-sm'
-    }`}>
-      <div className="p-6 border-b border-slate-700/30">
-        <h3 className={`font-bold text-lg flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-          <Package2 className="w-5 h-5" />
-          Équipements & Stock
-        </h3>
-        <p className={`text-xs mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-          Gestion complète du parc informatique
-        </p>
-      </div>
-      <div className="p-6">
-        {/* KPI Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className={`p-4 rounded-lg ${isDark ? 'bg-slate-800/50' : 'bg-blue-50'} border border-blue-200 dark:border-blue-800`}>
-            <p className={`text-xs font-bold ${isDark ? 'text-blue-400' : 'text-blue-600'}`}>STOCK TOTAL</p>
-            <p className={`text-2xl font-bold mt-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>{totalStock}</p>
-          </div>
-          <div className={`p-4 rounded-lg ${isDark ? 'bg-slate-800/50' : 'bg-emerald-50'} border border-emerald-200 dark:border-emerald-800`}>
-            <p className={`text-xs font-bold ${isDark ? 'text-emerald-400' : 'text-emerald-600'}`}>DISPONIBLE</p>
-            <p className={`text-2xl font-bold mt-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>{totalDisponible}</p>
-          </div>
-          <div className={`p-4 rounded-lg ${isDark ? 'bg-slate-800/50' : 'bg-orange-50'} border border-orange-200 dark:border-orange-800`}>
-            <p className={`text-xs font-bold ${isDark ? 'text-orange-400' : 'text-orange-600'}`}>UTILISÉ</p>
-            <p className={`text-2xl font-bold mt-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>{totalUtilise}</p>
-          </div>
-          <div className={`p-4 rounded-lg ${isDark ? 'bg-slate-800/50' : 'bg-purple-50'} border border-purple-200 dark:border-purple-800`}>
-            <p className={`text-xs font-bold ${isDark ? 'text-purple-400' : 'text-purple-600'}`}>INSTANCES</p>
-            <p className={`text-2xl font-bold mt-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>{instances.length}</p>
-          </div>
-        </div>
-
-        {/* Breakdown Attribué/Non Attribué */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div className={`p-4 rounded-lg border ${isDark ? 'bg-slate-800/30 border-slate-700' : 'bg-slate-50 border-slate-200'}`}>
-            <h4 className={`font-bold mb-3 ${isDark ? 'text-white' : 'text-slate-900'}`}>Attribution</h4>
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <span className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>✅ Attribuées</span>
-                <span className="font-bold text-green-600">{instancesAttribuees}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className={`text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>❌ Non attribuées</span>
-                <span className="font-bold text-red-600">{instancesNonAttribuees}</span>
-              </div>
-              <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
-                <span className={`text-sm font-semibold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>Total instances</span>
-                <span className="font-bold">{instances.length}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Pie chart Attribué/Non */}
-          <div className="flex justify-center">
-            <ResponsiveContainer width="100%" height={150}>
-              <PieChart>
-                <Pie
-                  data={[
-                    { name: 'Attribuées', value: instancesAttribuees },
-                    { name: 'Non attribuées', value: instancesNonAttribuees },
-                  ]}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={40}
-                  outerRadius={60}
-                  dataKey="value"
-                >
-                  <Cell fill="#10b981" />
-                  <Cell fill="#ef4444" />
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Tableau détaillé */}
-        <div className="overflow-x-auto">
-          <table className={`w-full text-sm ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-            <thead>
-              <tr className={`border-b ${isDark ? 'border-slate-700/50 bg-slate-800/30' : 'border-slate-200 bg-slate-100/50'}`}>
-                <th className="px-4 py-3 text-left font-bold">Équipement</th>
-                <th className="px-4 py-3 text-center font-bold">Stock Total</th>
-                <th className="px-4 py-3 text-center font-bold">Disponible</th>
-                <th className="px-4 py-3 text-center font-bold">Attribuées</th>
-                <th className="px-4 py-3 text-center font-bold">Non Attribuées</th>
-              </tr>
-            </thead>
-            <tbody>
-              {equipmentStats.map((eq) => (
-                <tr key={eq.nom} className={`border-b ${isDark ? 'border-slate-700/30 hover:bg-slate-800/20' : 'border-slate-200/50 hover:bg-slate-100/30'}`}>
-                  <td className="px-4 py-3 font-semibold">{eq.nom}</td>
-                  <td className="px-4 py-3 text-center">
-                    <span className={`px-2 py-1 rounded font-bold ${isDark ? 'bg-blue-500/20 text-blue-300' : 'bg-blue-100 text-blue-700'}`}>
-                      {eq.stock_total}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <span className={`px-2 py-1 rounded font-bold ${isDark ? 'bg-emerald-500/20 text-emerald-300' : 'bg-emerald-100 text-emerald-700'}`}>
-                      {eq.stock_disponible}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <span className={`px-2 py-1 rounded font-bold ${isDark ? 'bg-green-500/20 text-green-300' : 'bg-green-100 text-green-700'}`}>
-                      {eq.attribuees}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <span className={`px-2 py-1 rounded font-bold ${isDark ? 'bg-red-500/20 text-red-300' : 'bg-red-100 text-red-700'}`}>
-                      {eq.non_attribuees}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
@@ -569,67 +413,31 @@ export default function DashboardPage() {
           ))}
         </div>
 
-        {/* CARTE 16/9 + CHARTS - DOUBLE LARGEUR */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* CARTE */}
-          <div className={`rounded-xl border backdrop-blur-xl overflow-hidden ${
-            isDark ? 'bg-slate-900/40 border-slate-700/50' : 'bg-white/40 border-white/60 shadow-sm'
-          }`}>
-            <div className="p-6 border-b border-slate-700/30">
-              <h3 className={`font-bold text-lg ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                🗺️ Carte Interactive
-              </h3>
-              <p className={`text-xs mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-                Cliquez sur un point pour voir les détails
-              </p>
-            </div>
-            <div className="p-6" style={{ aspectRatio: '16 / 9' }}>
-              <InteractiveMap 
-                isDark={isDark} 
-                departments={departments} 
-                salaries={salaries} 
-                services={services} 
-                grades={grades}
-                onDepartmentClick={setSelectedDept}
-              />
-            </div>
+        {/* CARTE 16/9 */}
+        <div className={`rounded-xl border backdrop-blur-xl overflow-hidden ${
+          isDark ? 'bg-slate-900/40 border-slate-700/50' : 'bg-white/40 border-white/60 shadow-sm'
+        }`}>
+          <div className="p-6 border-b border-slate-700/30">
+            <h3 className={`font-bold text-lg ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              🗺️ Carte Interactive - Cliquez sur un point pour voir les détails
+            </h3>
+            <p className={`text-xs mt-1 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+              Taille des points = nombre de circuits
+            </p>
           </div>
-
-          {/* Genre Distribution */}
-          <div className={`rounded-xl border backdrop-blur-xl overflow-hidden ${
-            isDark ? 'bg-slate-900/40 border-slate-700/50' : 'bg-white/40 border-white/60 shadow-sm'
-          }`}>
-            <div className="p-6 border-b border-slate-700/30">
-              <h3 className={`font-bold text-lg flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                <Users className="w-5 h-5" />
-                Distribution par Genre
-              </h3>
-            </div>
-            <div className="p-6 flex justify-center" style={{ aspectRatio: '16 / 9' }}>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie 
-                    data={employeesByGender} 
-                    cx="50%" 
-                    cy="50%" 
-                    innerRadius={60}
-                    outerRadius={100}
-                    dataKey="employees"
-                    label={({ name, employees }) => `${name}: ${employees}`}
-                    labelLine={false}
-                  >
-                    {employeesByGender.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value: any) => `${value} emp.`} />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
+          <div className="p-6" style={{ aspectRatio: '16 / 9' }}>
+            <InteractiveMap 
+              isDark={isDark} 
+              departments={departments} 
+              salaries={salaries} 
+              services={services} 
+              grades={grades}
+              onDepartmentClick={setSelectedDept}
+            />
           </div>
         </div>
 
-        {/* TABLEAU DÉTAIL DÉPARTEMENT - PLEINE LARGEUR */}
+        {/* TABLEAU DÉTAIL DÉPARTEMENT */}
         {selectedDept && (
           <DepartmentDetailTable
             department={selectedDept}
@@ -709,8 +517,38 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* STATS ÉQUIPEMENTS - PLEINE LARGEUR */}
-        <EquipmentStats equipment={equipment} instances={instances} salaries={salaries} isDark={isDark} />
+        {/* Genre Distribution */}
+        <div className={`rounded-xl border backdrop-blur-xl overflow-hidden ${
+          isDark ? 'bg-slate-900/40 border-slate-700/50' : 'bg-white/40 border-white/60 shadow-sm'
+        }`}>
+          <div className="p-6 border-b border-slate-700/30">
+            <h3 className={`font-bold text-lg flex items-center gap-2 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <Users className="w-5 h-5" />
+              Distribution par Genre
+            </h3>
+          </div>
+          <div className="p-6 flex justify-center">
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie 
+                  data={employeesByGender} 
+                  cx="50%" 
+                  cy="50%" 
+                  innerRadius={60}
+                  outerRadius={100}
+                  dataKey="employees"
+                  label={({ name, employees }) => `${name}: ${employees}`}
+                  labelLine={false}
+                >
+                  {employeesByGender.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value: any) => `${value} emp.`} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
 
         {/* Top Salariés */}
         <div className={`rounded-xl border backdrop-blur-xl overflow-hidden ${

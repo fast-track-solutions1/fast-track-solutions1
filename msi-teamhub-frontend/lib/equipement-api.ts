@@ -1,7 +1,7 @@
 // lib/equipement-api.ts
 // API Client pour gérer les Équipements
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 export interface Equipment {
   id: number;

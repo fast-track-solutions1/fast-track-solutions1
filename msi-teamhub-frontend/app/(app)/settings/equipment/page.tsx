@@ -214,10 +214,10 @@ export default function EquipmentSettingsPage() {
   });
 
   // ============= API CALLS =============
-  const { data: equipments, loading: equipLoading, refetch: refetchEquip } = useFetch('/api/equipements/');
-  const { data: instances, loading: instanceLoading, refetch: refetchInstances } = useFetch('/api/equipement-instances/');
-  const { data: stats, refetch: refetchStats } = useFetch('/api/equipements/statistics/');
-  const { data: salaries, loading: salariesLoading } = useFetch('/api/salaries/');
+  const { data: equipments, loading: equipLoading, refetch: refetchEquip } = useFetch('/api/equipements');
+  const { data: instances, loading: instanceLoading, refetch: refetchInstances } = useFetch('/api/equipement-instances');
+  const { data: stats, refetch: refetchStats } = useFetch('/api/equipements/statistics');
+  const { data: salaries, loading: salariesLoading } = useFetch('/api/salaries');
 
   // ============= LIFECYCLE =============
   useEffect(() => {

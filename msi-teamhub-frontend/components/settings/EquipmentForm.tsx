@@ -6,10 +6,11 @@ import { X, Loader2 } from 'lucide-react';
 interface Equipment {
   id?: number;
   nom: string;
-  type: string;
-  quantite: number;
-  statut: string;
-  departement: string;
+  type_equipement: string;
+  description?: string;
+  stock_total: number;
+  stock_disponible: number;
+  actif: boolean;
 }
 
 interface EquipmentFormProps {
@@ -21,10 +22,11 @@ interface EquipmentFormProps {
 export default function EquipmentForm({ equipment, onSave, onCancel }: EquipmentFormProps) {
   const [formData, setFormData] = useState({
     nom: equipment?.nom || '',
-    type: equipment?.type || '',
-    quantite: equipment?.quantite || 0,
-    statut: equipment?.statut || 'Actif',
-    departement: equipment?.departement || '',
+    type_equipement: equipment?.type_equipement || '',
+    description: equipment?.description || '',
+    stock_total: equipment?.stock_total || 0,
+    stock_disponible: equipment?.stock_disponible || 0,
+    actif: equipment?.actif ?? true,
   });
 
   const [loading, setLoading] = useState(false);
@@ -32,10 +34,16 @@ export default function EquipmentForm({ equipment, onSave, onCancel }: Equipment
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
+    
     if (type === 'number') {
       setFormData((prev) => ({
         ...prev,
-        [name]: parseInt(value),
+        [name]: parseInt(value) || 0,
+      }));
+    } else if (type === 'checkbox') {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: (e.target as HTMLInputElement).checked,
       }));
     } else {
       setFormData((prev) => ({
@@ -54,6 +62,11 @@ export default function EquipmentForm({ equipment, onSave, onCancel }: Equipment
       return;
     }
 
+    if (formData.stock_disponible > formData.stock_total) {
+      setError('Stock disponible ne peut pas dépasser le stock total');
+      return;
+    }
+
     try {
       setLoading(true);
       await onSave(formData);
@@ -66,118 +79,103 @@ export default function EquipmentForm({ equipment, onSave, onCancel }: Equipment
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-lg max-w-md w-full mx-4">
-        {/* En-tête */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+      <div className="bg-white dark:bg-slate-800 rounded-lg p-6 w-full max-w-md">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">
             {equipment ? 'Modifier l\'équipement' : 'Ajouter un équipement'}
           </h2>
-          <button
-            onClick={onCancel}
-            className="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded"
-          >
+          <button onClick={onCancel} className="text-slate-500 hover:text-slate-700">
             <X size={20} />
           </button>
         </div>
 
-        {/* Formulaire */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {/* Erreur */}
+        <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="p-3 bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded">
+            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded">
               {error}
             </div>
           )}
 
-          {/* Nom */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Nom *
-            </label>
+            <label className="block text-sm font-medium mb-1">Nom *</label>
             <input
               type="text"
               name="nom"
               value={formData.nom}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
-              placeholder="Nom de l'équipement"
+              className="w-full border border-slate-300 dark:border-slate-600 rounded px-3 py-2 bg-white dark:bg-slate-700"
+              required
             />
           </div>
 
-          {/* Type */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Type
-            </label>
+            <label className="block text-sm font-medium mb-1">Type d'équipement</label>
             <input
               type="text"
-              name="type"
-              value={formData.type}
+              name="type_equipement"
+              value={formData.type_equipement}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
-              placeholder="Type d'équipement"
+              className="w-full border border-slate-300 dark:border-slate-600 rounded px-3 py-2 bg-white dark:bg-slate-700"
             />
           </div>
 
-          {/* Quantité */}
           <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Quantité
-            </label>
-            <input
-              type="number"
-              name="quantite"
-              value={formData.quantite}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
-              placeholder="0"
-            />
-          </div>
-
-          {/* Statut */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Statut
-            </label>
-            <select
-              name="statut"
-              value={formData.statut}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
-            >
-              <option value="Actif">Actif</option>
-              <option value="Inactif">Inactif</option>
-            </select>
-          </div>
-
-          {/* Département */}
-          <div>
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
-              Département
-            </label>
+            <label className="block text-sm font-medium mb-1">Description</label>
             <input
               type="text"
-              name="departement"
-              value={formData.departement}
+              name="description"
+              value={formData.description}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
-              placeholder="Département"
+              className="w-full border border-slate-300 dark:border-slate-600 rounded px-3 py-2 bg-white dark:bg-slate-700"
             />
           </div>
 
-          {/* Boutons */}
-          <div className="flex gap-2 justify-end pt-4">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-sm font-medium mb-1">Stock Total</label>
+              <input
+                type="number"
+                name="stock_total"
+                value={formData.stock_total}
+                onChange={handleChange}
+                className="w-full border border-slate-300 dark:border-slate-600 rounded px-3 py-2 bg-white dark:bg-slate-700"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-1">Stock Disponible</label>
+              <input
+                type="number"
+                name="stock_disponible"
+                value={formData.stock_disponible}
+                onChange={handleChange}
+                className="w-full border border-slate-300 dark:border-slate-600 rounded px-3 py-2 bg-white dark:bg-slate-700"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="actif"
+              checked={formData.actif}
+              onChange={handleChange}
+              className="rounded"
+            />
+            <label className="text-sm font-medium">Actif</label>
+          </div>
+
+          <div className="flex gap-2 justify-end mt-6">
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700"
+              className="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded hover:bg-slate-100 dark:hover:bg-slate-700"
             >
               Annuler
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
             >
               {loading && <Loader2 size={16} className="animate-spin" />}
               {equipment ? 'Modifier' : 'Ajouter'}

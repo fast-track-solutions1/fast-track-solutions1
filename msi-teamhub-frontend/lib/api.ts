@@ -156,6 +156,8 @@ class ApiClient {
     try {
       const url = this.buildUrl(endpoint, params);
       console.log('🔍 API GET URL:', url);
+      console.log('🔍 ENDPOINT REÇU:', endpoint); 
+      console.log('🔍 BASEURL:', this.baseUrl);
 
       const response = await fetch(url, {
         method: 'GET',
