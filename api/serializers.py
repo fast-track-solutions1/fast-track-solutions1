@@ -66,7 +66,7 @@ class ServiceSerializer(serializers.ModelSerializer):
         model = Service
         fields = [
             'id', 'nom', 'societe', 'description', 'responsable',
-            'responsable_info', 'actif', 'date_creation'
+            'responsable_info', 'parent_service', 'actif', 'date_creation'
         ]
         read_only_fields = ['date_creation']
     
